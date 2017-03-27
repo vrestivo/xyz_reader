@@ -16,10 +16,27 @@
 -->
 
 <resources>
+<!--
     <color name="photo_placeholder">#ccc</color>
 
     <color name="theme_primary">#04561A</color>
     <color name="theme_primary_dark">#04561A</color>
     <color name="theme_accent">#04561A</color>
+    <color name="ltgray">#ffe0e0e0</color>
+    -->
+
+
+    <!-- New color theme. Basing it on ic_launcher color -->
+    <color name="photo_placeholder">#ccc</color>
+
+    <color name="theme_primary">#F4511E</color>
+    <color name="theme_primary_dark">#BF360C</color>
+
+    <!-- Add a little bit of Udacity for the accent color -->
+    <!-- Reasoning: since default app color scheme is deep orange,
+        The accent color needs to provide enough contrast.  Since this
+        is a Udacity course project, I'll stick to Udacity Blue.
+     -->
+    <color name="theme_accent">#40C4FF</color>
     <color name="ltgray">#ffe0e0e0</color>
 </resources>
