@@ -24,29 +24,36 @@
             />
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/toolbar_container"
+      <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar_layout_main"
         android:layout_width="match_parent"
         android:layout_height="112dp"
-        android:background="?colorPrimary"
         android:elevation="8dp">
 
+
+          <!-- TODO define hard value as dimen xml resources -->
         <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:contentScrim="@color/theme_primary"
+            app:collapsedTitleTextAppearance="@style/CollapsedTitle"
+            app:expandedTitleTextAppearance="@style/ExpandedTitle"
+            app:expandedTitleMarginStart="64dp"
+            app:scrimVisibleHeightTrigger="112dp"
+            app:scrimAnimationDuration="150"
             >
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:paddingStart="@dimen/material_appbar_title_padding_left"
-                android:paddingBottom="@dimen/material_appbar_bottom_padding"
-                android:paddingTop="@dimen/material_appbar_padding_top_bottom"
                 android:contentDescription="@string/app_name"
-                android:scaleType="centerInside"
+                android:paddingBottom="@dimen/material_appbar_bottom_padding"
+                android:paddingStart="@dimen/material_appbar_title_padding_left"
+                android:paddingTop="@dimen/material_appbar_padding_top_bottom"
+                android:scaleType="fitCenter"
                 android:src="@drawable/logo"
                 app:layout_collapseMode="parallax"
 
@@ -54,19 +61,16 @@
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
+                style="@style/Theme.Bacon.ToolbarMobile"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:layout_gravity="bottom"
-                android:layout_marginLeft="@dimen/list_toolbar_side_margin"
-                android:layout_marginRight="@dimen/list_toolbar_side_margin"
-                app:layout_scrollFlags="scroll"
-                app:layout_collapseMode="parallax"
-                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                >
-            </android.support.v7.widget.Toolbar>
+                app:layout_collapseMode="pin"
+                />
+
+
 
         </android.support.design.widget.CollapsingToolbarLayout>
-
     </android.support.design.widget.AppBarLayout>
+
 
 </android.support.design.widget.CoordinatorLayout>

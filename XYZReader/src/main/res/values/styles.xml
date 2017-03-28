@@ -27,11 +27,23 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
-    <style name="Theme.Bacon.ToolbarMobile" parent="Theme.Bacon">
+    <style name="Theme.Bacon.ToolbarMobile" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:paddingLeft">@dimen/material_appbar_padding_righ_left</item>
         <item name="android:paddingRight">@dimen/material_appbar_padding_righ_left</item>
         <item name="titleMarginStart">@dimen/material_appbar_title_padding_left</item>
+        <item name="titleTextColor">@android:color/white</item>
+    </style>
 
+    <style name="Theme.Bacon.ToolbarMobile.Title">
+        <item name="android:textColorPrimary">@android:color/white</item>
+    </style>
+
+    <style name="CollapsedTitle">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="ExpandedTitle">
+        <item name="android:textColor">@android:color/transparent</item>
     </style>
 
 </resources>
