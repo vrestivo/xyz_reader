@@ -8,4 +8,18 @@
     <dimen name="fab_press_translation_z">6dp</dimen>
     <dimen name="fab_margin">24dp</dimen>
 
+
+
+    <!-- MATERIAL DESIGN SPEC DIMENSIONS -->
+
+    <!-- Toolbar/AppBar -->
+    <dimen name="material_appbar_land_height">48dp</dimen>
+    <dimen name="material_appbar_port_height">56dp</dimen>
+    <dimen name="material_appbar_padding_righ_left">16dp</dimen>
+    <dimen name="material_appbar_padding_top_bottom">16dp</dimen>
+    <dimen name="material_appbar_title_padding_left">72dp</dimen>
+    <dimen name="material_appbar_bottom_padding">20dp</dimen>
+    <dimen name="material_appbar_height_prominent">128dp</dimen>
+
+
 </resources>
