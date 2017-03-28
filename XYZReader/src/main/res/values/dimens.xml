@@ -22,6 +22,7 @@
     <dimen name="material_appbar_title_padding_left">72dp</dimen>
     <dimen name="material_appbar_bottom_padding">20dp</dimen>
     <dimen name="material_appbar_height_prominent">128dp</dimen>
+    <dimen name="material_appbar_elevation">4dp</dimen>
 
 
     <!-- horizontal material keylines and spacing -->
@@ -33,6 +34,7 @@
     <dimen name="material_mobile_toolbar_height_56">56dp</dimen>
     <dimen name="material_mobile_subtitle_height_48">48dp</dimen>
     <dimen name="material_mobile_list_item_height">72dp</dimen>
+    <dimen name="material_mobile_vert_content_areas_space">8dp</dimen>
 
 
 
