@@ -41,4 +41,11 @@
      -->
     <color name="theme_accent">#40C4FF</color>
     <color name="ltgray">#ffe0e0e0</color>
+
+
+    <!-- Color for linear gradient scrim title background -->
+    <color name="linear_gradient_start">#0000</color>
+    <color name="linear_gradient_center">#6000</color>
+    <color name="linear_gradient_end">#8000</color>
+
 </resources>
