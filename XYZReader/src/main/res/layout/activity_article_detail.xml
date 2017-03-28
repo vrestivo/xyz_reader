@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize">
 
+        <!-- TODO check back button dimensions -->
         <ImageButton
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             android:id="@+id/action_up"

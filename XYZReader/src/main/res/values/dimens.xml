@@ -4,9 +4,11 @@
     <dimen name="detail_body_text_size">22sp</dimen>
     <item name="detail_body_line_spacing_multiplier" format="float" type="fraction">1.25</item>
 
-    <dimen name="fab_elevation">2dp</dimen>
+    <!-- material FAB specs -->
+    <dimen name="fab_elevation">6dp</dimen>
     <dimen name="fab_press_translation_z">6dp</dimen>
-    <dimen name="fab_margin">24dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="fab_size_full">56dp</dimen>
 
 
 
@@ -20,6 +22,18 @@
     <dimen name="material_appbar_title_padding_left">72dp</dimen>
     <dimen name="material_appbar_bottom_padding">20dp</dimen>
     <dimen name="material_appbar_height_prominent">128dp</dimen>
+
+
+    <!-- horizontal material keylines and spacing -->
+    <dimen name="material_mobile_keyline_16">16dp</dimen>
+    <dimen name="material_mobile_keyline_72">72dp</dimen>
+
+    <!-- vertical material keylines and spacing -->
+    <dimen name="material_mobile_statusbar_height_24">24dp</dimen>
+    <dimen name="material_mobile_toolbar_height_56">56dp</dimen>
+    <dimen name="material_mobile_subtitle_height_48">48dp</dimen>
+    <dimen name="material_mobile_list_item_height">72dp</dimen>
+
 
 
 </resources>
