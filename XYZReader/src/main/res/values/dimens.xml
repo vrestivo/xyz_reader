@@ -35,6 +35,7 @@
     <dimen name="material_mobile_subtitle_height_48">48dp</dimen>
     <dimen name="material_mobile_list_item_height">72dp</dimen>
     <dimen name="material_mobile_vert_content_areas_space">8dp</dimen>
+    <dimen name="material_card_vertical_title_spacing">16dp</dimen>
 
 
 
