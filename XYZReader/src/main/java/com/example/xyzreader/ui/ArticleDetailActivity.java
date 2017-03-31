@@ -3,6 +3,7 @@ package com.example.xyzreader.ui;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.LoaderManager;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
@@ -10,22 +11,27 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowInsets;
 
 import com.example.xyzreader.R;
 import com.example.xyzreader.data.ArticleLoader;
 import com.example.xyzreader.data.ItemsContract;
 
+import java.util.ArrayList;
+
 /**
  * An activity representing a single Article detail screen, letting you swipe between articles.
  */
+
+//FIXME get rid of loader callbacks
 public class ArticleDetailActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<Cursor> {
+
+    private final String LOG_TAG = "ArticleDetailActivity";
 
     private Cursor mCursor;
     private long mStartId;
@@ -39,6 +45,10 @@ public class ArticleDetailActivity extends AppCompatActivity
     private View mUpButtonContainer;
     private View mUpButton;
 
+    // ArrayList containing movie IDs which will be passed
+    // to MyPagerAdapter
+    private ArrayList<Long> mArticleIdList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +59,19 @@ public class ArticleDetailActivity extends AppCompatActivity
         }
         setContentView(R.layout.activity_article_detail);
 
-        getLoaderManager().initLoader(0, null, this);
+        Intent intent = getIntent();
+
+        if(intent!=null && intent.hasExtra(ArticleListActivity.ARTICLE__IDS_TAG)){
+            //This works since ArrayList implements Serializable
+            mArticleIdList = (ArrayList<Long>) intent.getSerializableExtra(ArticleListActivity.ARTICLE__IDS_TAG);
+            for(Long id : mArticleIdList){
+                Log.v(LOG_TAG, "_Art_ID" + String.valueOf(id));
+            }
+        }_
+
+
+        //FIXME elliminate
+        //getLoaderManager().initLoader(0, null, this);
 
         mPagerAdapter = new MyPagerAdapter(getFragmentManager());
         mPager = (ViewPager) findViewById(R.id.pager);

@@ -27,8 +27,10 @@ import com.example.xyzreader.data.ArticleLoader;
 import com.example.xyzreader.data.ItemsContract;
 import com.example.xyzreader.data.UpdaterService;
 
+import java.nio.BufferUnderflowException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -45,13 +47,20 @@ public class ArticleListActivity extends AppCompatActivity implements
     private Toolbar mToolbar;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
-    private final float mImageAspectRatio =1.0f;
+    private final float mImageAspectRatio = 1.0f;
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss");
     // Use default locale format
     private SimpleDateFormat outputFormat = new SimpleDateFormat();
     // Most time functions can only handle 1902 - 2037
-    private GregorianCalendar START_OF_EPOCH = new GregorianCalendar(2,1,1);
+    private GregorianCalendar START_OF_EPOCH = new GregorianCalendar(2, 1, 1);
+
+    //ArrayList to store article IDs will be used to pass to detail activity
+    private ArrayList<Long> mArticleIdList;
+
+    //string name for the mArticleIdList
+    public static final String ARTICLE__IDS_TAG = "ARTICLE_IDs";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,7 +133,22 @@ public class ArticleListActivity extends AppCompatActivity implements
     //ArticleDetailFragment
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        cursor.getCount();
+
+        //fill mArticleIdList with article IDs
+        //the list will be passed to the detail activity to cut out
+        //unneeded database operations
+        int numItems = cursor.getCount();
+        if (numItems > 0 && cursor.moveToFirst()) {
+            mArticleIdList = new ArrayList<>();
+            int i = 0;
+            while (i < numItems) {
+                mArticleIdList.add(cursor.getLong(ArticleLoader.Query._ID));
+                cursor.moveToNext();
+                i++;
+            }
+
+        }
+
 
         Adapter adapter = new Adapter(cursor);
         adapter.setHasStableIds(true);
@@ -140,6 +164,8 @@ public class ArticleListActivity extends AppCompatActivity implements
         mRecyclerView.setAdapter(null);
     }
 
+
+    //Adapter implementation
     private class Adapter extends RecyclerView.Adapter<ViewHolder> {
         private Cursor mCursor;
 
@@ -160,8 +186,13 @@ public class ArticleListActivity extends AppCompatActivity implements
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    startActivity(new Intent(Intent.ACTION_VIEW,
-                            ItemsContract.Items.buildItemUri(getItemId(vh.getAdapterPosition()))));
+                    Intent intent = new Intent(Intent.ACTION_VIEW,
+                            ItemsContract.Items.buildItemUri(getItemId(vh.getAdapterPosition())));
+                    //paranoid check, just in case
+                    if(mArticleIdList!=null) {
+                        intent.putExtra(ARTICLE__IDS_TAG, mArticleIdList);
+                    }
+                    startActivity(intent);
                 }
             });
             return vh;
@@ -195,8 +226,8 @@ public class ArticleListActivity extends AppCompatActivity implements
             } else {
                 holder.subtitleView.setText(Html.fromHtml(
                         outputFormat.format(publishedDate)
-                        + "<br/>" + " by "
-                        + mCursor.getString(ArticleLoader.Query.AUTHOR)));
+                                + "<br/>" + " by "
+                                + mCursor.getString(ArticleLoader.Query.AUTHOR)));
             }
             holder.thumbnailView.setImageUrl(
                     mCursor.getString(ArticleLoader.Query.THUMB_URL),
@@ -213,6 +244,8 @@ public class ArticleListActivity extends AppCompatActivity implements
         }
     }
 
+
+    //ViewHolder implementation
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public DynamicHeightNetworkImageView thumbnailView;
         public TextView titleView;
