@@ -166,6 +166,7 @@ public class ArticleListActivity extends AppCompatActivity implements
 
 
     //Adapter implementation
+    //NOTE default returns _ID column value, NOT position index
     private class Adapter extends RecyclerView.Adapter<ViewHolder> {
         private Cursor mCursor;
 

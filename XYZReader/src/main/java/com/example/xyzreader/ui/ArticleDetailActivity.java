@@ -29,7 +29,8 @@ import java.util.ArrayList;
 
 //FIXME get rid of loader callbacks
 public class ArticleDetailActivity extends AppCompatActivity
-        implements LoaderManager.LoaderCallbacks<Cursor> {
+//        implements LoaderManager.LoaderCallbacks<Cursor>
+{
 
     private final String LOG_TAG = "ArticleDetailActivity";
 
@@ -59,15 +60,26 @@ public class ArticleDetailActivity extends AppCompatActivity
         }
         setContentView(R.layout.activity_article_detail);
 
-        Intent intent = getIntent();
 
-        if(intent!=null && intent.hasExtra(ArticleListActivity.ARTICLE__IDS_TAG)){
-            //This works since ArrayList implements Serializable
-            mArticleIdList = (ArrayList<Long>) intent.getSerializableExtra(ArticleListActivity.ARTICLE__IDS_TAG);
-            for(Long id : mArticleIdList){
-                Log.v(LOG_TAG, "_Art_ID" + String.valueOf(id));
+
+        if(savedInstanceState == null) {
+            Intent intent = getIntent();
+
+            if (intent != null && intent.hasExtra(ArticleListActivity.ARTICLE__IDS_TAG)) {
+                //This works since ArrayList implements Serializable
+                mArticleIdList = (ArrayList<Long>) intent.getSerializableExtra(ArticleListActivity.ARTICLE__IDS_TAG);
+                for (Long id : mArticleIdList) {
+                    Log.v(LOG_TAG, "_Art_ID" + String.valueOf(id));
+                }
+
+                if (getIntent() != null && getIntent().getData() != null) {
+                    mStartId = ItemsContract.Items.getItemId(getIntent().getData());
+                    mSelectedItemId = mStartId;
+                }
             }
-        }_
+        }
+
+
 
 
         //FIXME elliminate
@@ -86,21 +98,30 @@ public class ArticleDetailActivity extends AppCompatActivity
             @Override
             public void onPageScrollStateChanged(int state) {
                 super.onPageScrollStateChanged(state);
-                mUpButton.animate()
+
+                    //TODO replace button animation
+                    /*
+                    mUpButton.animate()
                         .alpha((state == ViewPager.SCROLL_STATE_IDLE) ? 1f : 0f)
                         .setDuration(300);
+                    */
             }
 
             @Override
             public void onPageSelected(int position) {
-                if (mCursor != null) {
-                    mCursor.moveToPosition(position);
-                }
+                if (mArticleIdList != null) {
+                    //mCursor.moveToPosition(position);
 
-                //FIXME crashes here. pass movie id paramenter
-                mSelectedItemId = mCursor.getLong(ArticleLoader.Query._ID);
-                //FIXME
-                //updateUpButtonPosition();
+                    //}
+
+                    mSelectedItemId =mArticleIdList.get(position);
+
+                    //FIXME crashes here. pass movie id paramenter
+                    //mSelectedItemId = mCursor.getLong(ArticleLoader.Query._ID);
+                    //FIXME
+                    //updateUpButtonPosition();
+
+                }
             }
         });
 
@@ -133,14 +154,14 @@ public class ArticleDetailActivity extends AppCompatActivity
             });
         }*/
 
-        if (savedInstanceState == null) {
-            if (getIntent() != null && getIntent().getData() != null) {
-                mStartId = ItemsContract.Items.getItemId(getIntent().getData());
-                mSelectedItemId = mStartId;
-            }
-        }
+
     }
 
+
+
+    //FIXME delete when done
+
+/*
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         return ArticleLoader.newAllArticlesInstance(this);
@@ -172,6 +193,7 @@ public class ArticleDetailActivity extends AppCompatActivity
         mCursor = null;
         mPagerAdapter.notifyDataSetChanged();
     }
+*/
 
 //    public void onUpButtonFloorChanged(long itemId, ArticleDetailFragment fragment) {
 //        if (itemId == mSelectedItemId) {
@@ -207,14 +229,23 @@ public class ArticleDetailActivity extends AppCompatActivity
         //Required
         @Override
         public Fragment getItem(int position) {
-            mCursor.moveToPosition(position);
-            return ArticleDetailFragment.newInstance(mCursor.getLong(ArticleLoader.Query._ID));
+            //mCursor.moveToPosition(position);
+            if(mArticleIdList!=null && position <= mArticleIdList.size() ) {
+                Log.v(LOG_TAG, "_art position: " + mArticleIdList.get(position));
+                return ArticleDetailFragment.newInstance(mArticleIdList.get(position));
+            }
+
+            return  null;
         }
 
         //Required
         @Override
         public int getCount() {
-            return (mCursor != null) ? mCursor.getCount() : 0;
+            //return (mCursor != null) ? mCursor.getCount() : 0;
+            if(mArticleIdList!= null){
+                return mArticleIdList.size();
+            }
+            return 0;
         }
     }
 }
