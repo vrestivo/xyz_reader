@@ -46,6 +46,10 @@ public class ArticleDetailActivity extends AppCompatActivity
     private View mUpButtonContainer;
     private View mUpButton;
 
+    //tags variables to be saved in instance state
+    private final String ID_TAG = "ID_TAG";
+    private final String ART_TAG = "ART_TAG";
+
     // ArrayList containing movie IDs which will be passed
     // to MyPagerAdapter
     private ArrayList<Long> mArticleIdList;
@@ -78,8 +82,16 @@ public class ArticleDetailActivity extends AppCompatActivity
                 }
             }
         }
+        //restore variables state
+        else {
+            mSelectedItemId = savedInstanceState.getLong(ID_TAG);
+            mArticleIdList = (ArrayList<Long>) savedInstanceState.getSerializable(ART_TAG);
+        }
 
 
+        //TODO delete when done
+        Log.v(LOG_TAG, "_in onCreate() item ID: " + mSelectedItemId);
+        Log.v(LOG_TAG, "_in onCreate() ArrayListSize: " + mArticleIdList.size());
 
 
         //FIXME elliminate
@@ -155,11 +167,16 @@ public class ArticleDetailActivity extends AppCompatActivity
         }*/
 
 
+    } //end of onCreate()
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putLong(ID_TAG, mSelectedItemId);
+        outState.putSerializable(ART_TAG, mArticleIdList);
+        super.onSaveInstanceState(outState);
     }
 
-
-
-    //FIXME delete when done
+//FIXME delete when done
 
 /*
     @Override
@@ -230,7 +247,7 @@ public class ArticleDetailActivity extends AppCompatActivity
         @Override
         public Fragment getItem(int position) {
             //mCursor.moveToPosition(position);
-            if(mArticleIdList!=null && position <= mArticleIdList.size() ) {
+            if(mArticleIdList!=null && position < mArticleIdList.size() ) {
                 Log.v(LOG_TAG, "_art position: " + mArticleIdList.get(position));
                 return ArticleDetailFragment.newInstance(mArticleIdList.get(position));
             }
