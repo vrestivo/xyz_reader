@@ -43,6 +43,7 @@ public class UpdaterService extends IntentService {
             return;
         }
 
+        //FIXME change to a different bcast
         sendStickyBroadcast(
                 new Intent(BROADCAST_ACTION_STATE_CHANGE).putExtra(EXTRA_REFRESHING, true));
 
