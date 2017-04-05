@@ -9,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.RemoteException;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.format.Time;
 import android.util.Log;
 
@@ -28,6 +29,10 @@ public class UpdaterService extends IntentService {
     public static final String EXTRA_REFRESHING
             = "com.example.xyzreader.intent.extra.REFRESHING";
 
+    private LocalBroadcastManager mLocalBroadcastManager;
+
+
+
     public UpdaterService() {
         super(TAG);
     }
@@ -43,9 +48,11 @@ public class UpdaterService extends IntentService {
             return;
         }
 
-        //FIXME change to a different bcast
-        sendStickyBroadcast(
-                new Intent(BROADCAST_ACTION_STATE_CHANGE).putExtra(EXTRA_REFRESHING, true));
+        //changing to local broadcast since we are not sharing data outside our process
+        //and the use of sticky broadcasts is discouraged due to security reasons
+        //additionally local broadcasts are more efficient
+        mLocalBroadcastManager = LocalBroadcastManager.getInstance(getApplicationContext());
+        mLocalBroadcastManager.sendBroadcast(new Intent(BROADCAST_ACTION_STATE_CHANGE).putExtra(EXTRA_REFRESHING, true));
 
         // Don't even inspect the intent, we only do one thing, and that's fetch content.
         ArrayList<ContentProviderOperation> cpo = new ArrayList<ContentProviderOperation>();
@@ -81,7 +88,6 @@ public class UpdaterService extends IntentService {
             Log.e(TAG, "Error updating content.", e);
         }
 
-        sendStickyBroadcast(
-                new Intent(BROADCAST_ACTION_STATE_CHANGE).putExtra(EXTRA_REFRESHING, false));
+        mLocalBroadcastManager.sendBroadcast(new Intent(BROADCAST_ACTION_STATE_CHANGE).putExtra(EXTRA_REFRESHING, false));
     }
 }

@@ -9,6 +9,7 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
@@ -61,11 +62,18 @@ public class ArticleListActivity extends AppCompatActivity implements
     //string name for the mArticleIdList
     public static final String ARTICLE__IDS_TAG = "ARTICLE_IDs";
 
+    //local broadcast manager instance
+    private LocalBroadcastManager mLocalBroadcastManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_article_list);
+
+
+        mLocalBroadcastManager = LocalBroadcastManager.getInstance(this);
 
         //TODO cleanup
         CollapsingToolbarLayout ctl = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout);
@@ -96,15 +104,18 @@ public class ArticleListActivity extends AppCompatActivity implements
     @Override
     protected void onStart() {
         super.onStart();
-        registerReceiver(mRefreshingReceiver,
+        //changing to local broadcast since we are not sharing data outside our process
+        //and the use of sticky broadcasts is discouraged due to security reasons
+        //additionally local broadcasts are more efficient
+        mLocalBroadcastManager.registerReceiver(mRefreshingReceiver,
                 new IntentFilter(UpdaterService.BROADCAST_ACTION_STATE_CHANGE));
+
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        unregisterReceiver(mRefreshingReceiver);
-    }
+        mLocalBroadcastManager.unregisterReceiver(mRefreshingReceiver);    }
 
     private boolean mIsRefreshing = false;
 
