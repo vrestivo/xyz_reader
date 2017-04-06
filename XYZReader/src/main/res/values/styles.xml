@@ -68,4 +68,10 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <!-- Article Body Style -->
+    <style name="Body">
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+    
+    
 </resources>
