@@ -19,6 +19,7 @@ import java.util.GregorianCalendar;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.ShareCompat;
+import android.support.v4.view.NestedScrollingChild;
 import android.support.v7.graphics.Palette;
 import android.text.Html;
 import android.text.format.DateUtils;
@@ -52,6 +53,7 @@ public class ArticleDetailFragment extends Fragment implements
     private View mRootView;
     private int mMutedColor = 0xFF333333;
     private ObservableScrollView mScrollView;
+    //private NestedScrollingChild mScrollView;
     private CoordinatorLayout mDetailFragmentCoordinatorLayout;
     private ColorDrawable mStatusBarColorDrawable;
 
@@ -134,7 +136,7 @@ public class ArticleDetailFragment extends Fragment implements
                 mScrollY = mScrollView.getScrollY();
                 //FIXME
                 //getActivityCast().onUpButtonFloorChanged(mItemId, ArticleDetailFragment.this);
-                mPhotoContainerView.setTranslationY((int) (mScrollY - mScrollY / PARALLAX_FACTOR));
+                mPhotoContainerView.setTranslationY((int) -(mScrollY - (mScrollY / PARALLAX_FACTOR)));
                 updateStatusBar();
             }
         });
