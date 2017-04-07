@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.ShareCompat;
@@ -69,6 +70,9 @@ public class ArticleDetailFragment extends Fragment implements
     private SimpleDateFormat outputFormat = new SimpleDateFormat();
     // Most time functions can only handle 1902 - 2037
     private GregorianCalendar START_OF_EPOCH = new GregorianCalendar(2,1,1);
+
+    //string used for paragraph break filtering
+    private final String BREAK = "-----";
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -215,7 +219,9 @@ public class ArticleDetailFragment extends Fragment implements
         TextView bodyView = (TextView) mRootView.findViewById(R.id.article_body);
 
 
-        bodyView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Rosario-Regular.ttf"));
+        //bodyView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Rosario-Regular.ttf"));
+
+
 
         if (mCursor != null) {
             mRootView.setAlpha(0);
@@ -241,7 +247,31 @@ public class ArticleDetailFragment extends Fragment implements
                                 + "</font>"));
 
             }
-            bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br />")));
+
+
+            //bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br />")));
+            //account for deprecated Hhtm.fromhtml()
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+                //bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br />"), Html.FROM_HTML_MODE_COMPACT));
+                //bodyView.setText(mCursor.getString(ArticleLoader.Query.BODY));
+                //bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n\r\n|\n\n)", "****"), Html.FROM_HTML_MODE_COMPACT));
+                //bodyView.setText(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n\r\n|\n\n)", "\r\n\r\n").replaceAll("(\r\n|\n){1}", ""));
+
+                String article = Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n){2}", BREAK), Html.FROM_HTML_MODE_LEGACY).toString();
+                bodyView.setText(article.replaceAll(BREAK, "\n\n"));
+
+
+            }
+            else {
+                //Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY));
+                //TODO test on a legacy device
+                String article = Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n){2}", BREAK)).toString();
+                bodyView.setText(article.replaceAll(BREAK, "\n\n"));
+
+            }
+
+
+
             ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
                     .get(mCursor.getString(ArticleLoader.Query.PHOTO_URL), new ImageLoader.ImageListener() {
                         @Override
