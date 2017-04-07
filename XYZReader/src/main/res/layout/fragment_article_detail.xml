@@ -3,12 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root_detail_fragment"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/transparent"
+    >
 
-    <FrameLayout
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/article_detail_appbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+    <android.support.design.widget.CollapsingToolbarLayout
         android:id="@+id/photo_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/photo_placeholder"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_scrollFlags="scroll|exitUntilCollapsed"
@@ -20,6 +28,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
+            app:layout_scrollFlags="scroll"
+            app:layout_collapseMode="parallax"
             />
 
 <!--        <View
@@ -27,16 +37,26 @@
             android:layout_height="match_parent"
             android:background="@drawable/photo_background_protection" />-->
 
-    </FrameLayout>
+    </android.support.design.widget.CollapsingToolbarLayout>
 
+    </android.support.design.widget.AppBarLayout>
+
+
+<!--
     <com.example.xyzreader.ui.ObservableScrollView
+-->
+
+
+    <android.support.v4.widget.NestedScrollView
         android:id="@+id/scrollview"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:elevation="2dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         >
 
-        <FrameLayout
+        <com.example.xyzreader.ui.MaxWidthLinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxWidth="@dimen/detail_card_max_width"
@@ -112,8 +132,10 @@
 
 
             </LinearLayout>
-        </FrameLayout>
-    </com.example.xyzreader.ui.ObservableScrollView>
+        </com.example.xyzreader.ui.MaxWidthLinearLayout>
+
+
+    </android.support.v4.widget.NestedScrollView>
 
     <ImageButton android:id="@+id/share_fab"
         android:stateListAnimator="@anim/fab_state_list_anim"
