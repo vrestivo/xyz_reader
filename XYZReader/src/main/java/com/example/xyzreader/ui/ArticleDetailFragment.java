@@ -20,9 +20,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.ShareCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.NestedScrollingChild;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
@@ -30,6 +33,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -62,6 +66,7 @@ public class ArticleDetailFragment extends Fragment implements
     private int mTopInset;
     private View mPhotoContainerView;
     private ImageView mPhotoView;
+    private ImageButton mBackButton;
     private int mScrollY;
     private boolean mIsCard = false;
     private int mStatusBarFullOpacityBottom;
@@ -70,7 +75,7 @@ public class ArticleDetailFragment extends Fragment implements
     // Use default locale format
     private SimpleDateFormat outputFormat = new SimpleDateFormat();
     // Most time functions can only handle 1902 - 2037
-    private GregorianCalendar START_OF_EPOCH = new GregorianCalendar(2,1,1);
+    private GregorianCalendar START_OF_EPOCH = new GregorianCalendar(2, 1, 1);
 
     //string used for paragraph break filtering
     private final String BREAK = "-----";
@@ -122,7 +127,7 @@ public class ArticleDetailFragment extends Fragment implements
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_article_detail, container, false);
         mDetailFragmentCoordinatorLayout = (CoordinatorLayout)
                 mRootView.findViewById(R.id.root_detail_fragment);
@@ -133,6 +138,28 @@ public class ArticleDetailFragment extends Fragment implements
                 mTopInset = insets.top;
             }
         });*/
+
+        //Setup Toolbar
+        Toolbar toolbar = (Toolbar) mRootView.findViewById(R.id.detail_fragment_toolbar);
+
+        //toolbar back button
+        mBackButton = (ImageButton) mRootView.findViewById(R.id.detail_back_button);
+
+        final AppCompatActivity activity = ((AppCompatActivity) getActivity());
+
+        mBackButton.setOnClickListener(new View.OnClickListener() {
+                                                 @Override
+                                                 public void onClick(View v) {
+                                                     getActivity().onBackPressed();
+
+                                                 }
+                                             }
+
+        );
+
+//        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
+
 
         //mScrollView = (ObservableScrollView) mRootView.findViewById(R.id.scrollview);
         mScrollView = (NestedScrollView) mRootView.findViewById(R.id.scrollview);
@@ -227,7 +254,6 @@ public class ArticleDetailFragment extends Fragment implements
         //bodyView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Rosario-Regular.ttf"));
 
 
-
         if (mCursor != null) {
             mRootView.setAlpha(0);
             mRootView.setVisibility(View.VISIBLE);
@@ -248,7 +274,7 @@ public class ArticleDetailFragment extends Fragment implements
                 // If date is before 1902, just show the string
                 bylineView.setText(Html.fromHtml(
                         outputFormat.format(publishedDate) + " by <font color='#ffffff'>"
-                        + mCursor.getString(ArticleLoader.Query.AUTHOR)
+                                + mCursor.getString(ArticleLoader.Query.AUTHOR)
                                 + "</font>"));
 
             }
@@ -256,7 +282,7 @@ public class ArticleDetailFragment extends Fragment implements
 
             //bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br />")));
             //account for deprecated Hhtm.fromhtml()
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 //bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br />"), Html.FROM_HTML_MODE_COMPACT));
                 //bodyView.setText(mCursor.getString(ArticleLoader.Query.BODY));
                 //bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n\r\n|\n\n)", "****"), Html.FROM_HTML_MODE_COMPACT));
@@ -266,15 +292,13 @@ public class ArticleDetailFragment extends Fragment implements
                 bodyView.setText(article.replaceAll(BREAK, "\n\n"));
 
 
-            }
-            else {
+            } else {
                 //Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY));
                 //TODO test on a legacy device
                 String article = Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n){2}", BREAK)).toString();
                 bodyView.setText(article.replaceAll(BREAK, "\n\n"));
 
             }
-
 
 
             ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
@@ -300,7 +324,7 @@ public class ArticleDetailFragment extends Fragment implements
         } else {
             mRootView.setVisibility(View.GONE);
             titleView.setText("N/A");
-            bylineView.setText("N/A" );
+            bylineView.setText("N/A");
             bodyView.setText("N/A");
         }
     }

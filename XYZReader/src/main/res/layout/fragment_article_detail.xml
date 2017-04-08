@@ -19,8 +19,13 @@
         android:layout_height="match_parent"
         android:background="@color/photo_placeholder"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:contentScrim="@color/theme_primary"
         app:layout_scrollFlags="scroll|exitUntilCollapsed"
         app:layout_collapseMode="parallax"
+        app:collapsedTitleTextAppearance="@style/ExpandedTitle"
+        app:expandedTitleTextAppearance="@style/ExpandedTitle"
+        app:scrimVisibleHeightTrigger="112dp"
+        app:scrimAnimationDuration="150"
         >
         <!--suppress AndroidLintContentDescription -->
         <ImageView
@@ -31,6 +36,61 @@
             app:layout_scrollFlags="scroll"
             app:layout_collapseMode="parallax"
             />
+
+
+        <!-- TODO add radial gradient -->
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
+            android:paddingBottom="@dimen/material_appbar_bottom_padding"
+            android:layout_marginStart="@dimen/material_appbar_title_padding_left"
+            android:src="@drawable/logo"
+            app:layout_collapseMode="none"
+            android:layout_gravity="bottom"
+            />
+
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/detail_fragment_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/material_appbar_port_height"
+            app:layout_collapseMode="pin"
+            >
+
+            <!--TODO add shadow to button-->
+            <ImageButton
+                android:id="@+id/detail_back_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_arrow_back"
+                android:background="@color/transparent"
+                android:layout_marginEnd="16dp"
+                android:padding="@dimen/material_appbar_nav_button_padding"
+                />
+
+        <!--    <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/material_appbar_height_prominent"
+                android:contentDescription="@string/app_name"
+                android:paddingBottom="@dimen/material_appbar_bottom_padding"
+                android:paddingTop="@dimen/material_appbar_padding_top_bottom"
+                android:paddingStart="@dimen/material_appbar_title_padding_left"
+                android:src="@drawable/logo"
+                app:layout_collapseMode="none"
+                />-->
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/app_name"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/logo"
+                app:layout_collapseMode="none"
+                />
+
+
+        </android.support.v7.widget.Toolbar>
 
 <!--        <View
             android:layout_width="match_parent"

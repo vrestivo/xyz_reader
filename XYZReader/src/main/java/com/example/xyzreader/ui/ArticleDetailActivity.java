@@ -173,6 +173,8 @@ public class ArticleDetailActivity extends AppCompatActivity
 
     } //end of onCreate()
 
+
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putLong(ID_TAG, mSelectedItemId);
