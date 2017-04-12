@@ -9,4 +9,6 @@
 
     <string name="up">Up</string>
 
+    <string name="tag_app_logo">app_logo</string>
+
 </resources>

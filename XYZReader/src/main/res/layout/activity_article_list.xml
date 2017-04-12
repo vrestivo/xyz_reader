@@ -39,7 +39,7 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:contentScrim="@color/theme_primary"
-            app:collapsedTitleTextAppearance="@style/CollapsedTitle"
+            app:collapsedTitleTextAppearance="@style/ExpandedTitle"
             app:expandedTitleTextAppearance="@style/ExpandedTitle"
             app:expandedTitleMarginStart="64dp"
             app:scrimVisibleHeightTrigger="112dp"
@@ -49,6 +49,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:elevation="@dimen/material_appbar_elevation"
                 android:contentDescription="@string/app_name"
                 android:paddingBottom="@dimen/material_appbar_bottom_padding"
                 android:paddingStart="@dimen/material_appbar_title_padding_left"
