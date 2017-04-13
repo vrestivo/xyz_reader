@@ -32,6 +32,9 @@ public class MyBehavior extends AppBarLayout.ScrollingViewBehavior {
     private ImageView mToolbarLogo;
     private DisplayMetrics mDisplayMetrics;
 
+    //used for setting overlap
+    private final int DENOMINATOR = 3;
+
     private int mOverlap = 0;
 
     private String mAppLogoTag;
@@ -72,7 +75,7 @@ public class MyBehavior extends AppBarLayout.ScrollingViewBehavior {
             if(mDisplayMetrics==null) {
                 mDisplayMetrics = dependency.getResources().getDisplayMetrics();
             }
-            int third = Math.round(mDisplayMetrics.heightPixels/3);
+            int third = Math.round(mDisplayMetrics.heightPixels/DENOMINATOR);
             int bottom = dependency.getBottom();
 
             int newOverlap = bottom-third;
