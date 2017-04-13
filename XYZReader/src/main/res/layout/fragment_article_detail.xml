@@ -4,7 +4,7 @@
     android:id="@+id/root_detail_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/transparent"
+    android:background="@android:color/holo_green_light"
     >
 
     <android.support.design.widget.AppBarLayout
@@ -91,13 +91,15 @@
 
 
     <android.support.v4.widget.NestedScrollView
-        android:id="@+id/scrollview"
+        android:id="@+id/nested_scrollview"
         android:tag="tag_nested_scroll_view"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
         android:elevation="2dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:background="@color/transparent"
+
         >
 
         <com.example.xyzreader.ui.MaxWidthLinearLayout

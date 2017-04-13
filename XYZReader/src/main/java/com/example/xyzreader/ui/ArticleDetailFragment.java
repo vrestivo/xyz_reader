@@ -7,8 +7,6 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Rect;
-import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 
 import java.text.ParseException;
@@ -20,7 +18,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.ShareCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.NestedScrollingChild;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
@@ -162,7 +159,7 @@ public class ArticleDetailFragment extends Fragment implements
 
 
         //mScrollView = (ObservableScrollView) mRootView.findViewById(R.id.scrollview);
-        mScrollView = (NestedScrollView) mRootView.findViewById(R.id.scrollview);
+        mScrollView = (NestedScrollView) mRootView.findViewById(R.id.nested_scrollview);
 
 
 /*
