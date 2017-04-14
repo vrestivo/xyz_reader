@@ -31,6 +31,7 @@
 
     <color name="theme_primary">#F4511E</color>
     <color name="theme_primary_dark">#BF360C</color>
+    <color name="article_background_white">#fff</color>
 
     <color name="transparent">@android:color/transparent</color>
 

@@ -123,7 +123,7 @@ public class MyBehavior extends AppBarLayout.ScrollingViewBehavior {
         }
         else {
             //mToolbarLogo.setImageAlpha(0);
-            mToolbarLogo.setVisibility(View.GONE);
+            mToolbarLogo.setVisibility(View.INVISIBLE);
 
         }
 
