@@ -16,6 +16,8 @@ import java.util.GregorianCalendar;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.view.NestedScrollingChild;
@@ -128,6 +130,15 @@ public class ArticleDetailFragment extends Fragment implements
         mRootView = inflater.inflate(R.layout.fragment_article_detail, container, false);
         mDetailFragmentCoordinatorLayout = (CoordinatorLayout)
                 mRootView.findViewById(R.id.root_detail_fragment);
+
+        AppBarLayout appBarLayout = (AppBarLayout) mRootView.findViewById(R.id.article_detail_appbar_layout);
+        appBarLayout.setBackground(null);
+
+        mDetailFragmentCoordinatorLayout.setBackground(null);
+
+
+
+
         //FIXME
 /*        mDetailFragmentCoordinatorLayout.setOnInsetsCallback(new DrawInsetsFrameLayout.OnInsetsCallback() {
             @Override
@@ -138,6 +149,7 @@ public class ArticleDetailFragment extends Fragment implements
 
         //Setup Toolbar
         Toolbar toolbar = (Toolbar) mRootView.findViewById(R.id.detail_fragment_toolbar);
+        toolbar.setBackground(null);
 
         //toolbar back button
         mBackButton = (ImageButton) mRootView.findViewById(R.id.detail_back_button);
@@ -178,6 +190,7 @@ public class ArticleDetailFragment extends Fragment implements
 
         // FIXME: 4/3/17 fix mPhotoContainerView references - no longer used
         mPhotoContainerView = mRootView.findViewById(R.id.photo_container);
+        mPhotoContainerView.setBackground(null);
 
         mStatusBarColorDrawable = new ColorDrawable(0);
 

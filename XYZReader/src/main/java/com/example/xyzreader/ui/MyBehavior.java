@@ -118,10 +118,13 @@ public class MyBehavior extends AppBarLayout.ScrollingViewBehavior {
 
 
         if(bottom/mDisplayMetrics.scaledDensity<=mToolbar.getHeight() && mToolbarLogo!=null) {
-            mToolbarLogo.setImageAlpha(255);
+            //mToolbarLogo.setImageAlpha(255);
+            mToolbarLogo.setVisibility(View.VISIBLE);
         }
         else {
-            mToolbarLogo.setImageAlpha(0);
+            //mToolbarLogo.setImageAlpha(0);
+            mToolbarLogo.setVisibility(View.GONE);
+
         }
 
         //TODO set animation for the logo

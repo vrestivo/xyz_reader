@@ -65,7 +65,6 @@ public class ArticleDetailActivity extends AppCompatActivity
         setContentView(R.layout.activity_article_detail);
 
 
-
         if(savedInstanceState == null) {
             Intent intent = getIntent();
 
