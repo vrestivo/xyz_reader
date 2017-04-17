@@ -10,5 +10,20 @@
 
     <!-- Toolbar/AppBar -->
     <dimen name="tablet_appbar_height">64dp</dimen>
-    
+
+    <!-- horizontal material keylines and spacing -->
+    <dimen name="material_screen_edge_keyline">24dp</dimen>
+    <dimen name="material_content_margin">80dp</dimen>
+
+    <!-- vertical material keylines and spacing -->
+    <dimen name="material_statusbar_height">24dp</dimen>
+    <dimen name="material_toolbar_height">72dp</dimen>
+    <dimen name="material_subtitle_height">48dp</dimen>
+    <dimen name="material_title_height">80dp</dimen>
+    <dimen name="material_list_item_height">72dp</dimen>
+    <dimen name="material_vert_content_area_space">8dp</dimen>
+    <dimen name="material_card_vertical_title_spacing">16dp</dimen>
+
+
+
 </resources>

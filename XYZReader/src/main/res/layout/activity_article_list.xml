@@ -17,10 +17,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-            android:paddingBottom="@dimen/material_mobile_vert_content_areas_space"
+            android:paddingBottom="@dimen/material_vert_content_area_space"
             android:paddingLeft="@dimen/list_side_margin"
             android:paddingRight="@dimen/list_side_margin"
-            android:paddingTop="@dimen/material_mobile_vert_content_areas_space"
+            android:paddingTop="@dimen/material_vert_content_area_space"
             android:scrollbarStyle="outsideOverlay"
             />
     </android.support.v4.widget.SwipeRefreshLayout>
