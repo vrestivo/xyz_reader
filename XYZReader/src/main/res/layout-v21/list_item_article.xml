@@ -9,7 +9,9 @@
                                     android:layout_marginTop="4dp"
                                     android:clickable="true"
                                     android:focusable="true"
-                                    android:foreground="?selectableItemBackground">
+                                    android:foreground="?selectableItemBackground"
+
+    >
 
 
     <RelativeLayout
@@ -25,6 +27,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
+            android:transitionName="@string/transition_image"
+
             />
 
         <TextView

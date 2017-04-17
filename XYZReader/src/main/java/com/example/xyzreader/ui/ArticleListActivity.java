@@ -7,12 +7,14 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.Loader;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
@@ -28,7 +30,6 @@ import com.example.xyzreader.data.ArticleLoader;
 import com.example.xyzreader.data.ItemsContract;
 import com.example.xyzreader.data.UpdaterService;
 
-import java.nio.BufferUnderflowException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -115,7 +116,8 @@ public class ArticleListActivity extends AppCompatActivity implements
     @Override
     protected void onStop() {
         super.onStop();
-        mLocalBroadcastManager.unregisterReceiver(mRefreshingReceiver);    }
+        mLocalBroadcastManager.unregisterReceiver(mRefreshingReceiver);
+    }
 
     private boolean mIsRefreshing = false;
 
@@ -161,7 +163,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         }
 
 
-        Adapter adapter = new Adapter(cursor);
+        Adapter adapter = new Adapter(cursor, getApplicationContext(), this);
         adapter.setHasStableIds(true);
         mRecyclerView.setAdapter(adapter);
         int columnCount = getResources().getInteger(R.integer.list_column_count);
@@ -180,9 +182,16 @@ public class ArticleListActivity extends AppCompatActivity implements
     //NOTE default returns _ID column value, NOT position index
     private class Adapter extends RecyclerView.Adapter<ViewHolder> {
         private Cursor mCursor;
+        private AppCompatActivity mActivity;
+        private Context mmContext;
 
-        public Adapter(Cursor cursor) {
+        //        public Adapter(Cursor cursor, AppCompatActivity activity) {
+        public Adapter(Cursor cursor, Context context, AppCompatActivity activity) {
+
             mCursor = cursor;
+            mActivity = activity;
+            mmContext = context;
+
         }
 
         @Override
@@ -201,10 +210,32 @@ public class ArticleListActivity extends AppCompatActivity implements
                     Intent intent = new Intent(Intent.ACTION_VIEW,
                             ItemsContract.Items.buildItemUri(getItemId(vh.getAdapterPosition())));
                     //paranoid check, just in case
-                    if(mArticleIdList!=null) {
+                    if (mArticleIdList != null) {
                         intent.putExtra(ARTICLE__IDS_TAG, mArticleIdList);
                     }
-                    startActivity(intent);
+
+                    //TODO
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && view != null) {
+                        if (view instanceof CardView) {
+                            View thumbnail = view.findViewById(R.id.thumbnail);
+                            String trName = null;
+                            if (thumbnail != null && (trName = thumbnail.getTransitionName()) != null) {
+                                Bundle transitionBundle = ActivityOptionsCompat
+                                        .makeSceneTransitionAnimation(
+                                                mActivity,
+                                                //getApplication().act,
+                                                thumbnail,
+                                                trName)
+                                        .toBundle();
+
+                                startActivity(intent, transitionBundle);
+                            }
+                        }
+                        Log.v(TAG, "_in onCreateViewHolder() view or view transition name is null");
+
+                    } else {
+                        startActivity(intent);
+                    }
                 }
             });
             return vh;

@@ -11,4 +11,6 @@
 
     <string name="tag_app_logo">app_logo</string>
 
+    <string name="transition_image">transition_image</string>
+
 </resources>

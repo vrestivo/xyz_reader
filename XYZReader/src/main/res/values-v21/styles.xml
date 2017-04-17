@@ -1,0 +1,82 @@
+<!-- File created by the Android Action Bar Style Generator
+
+     Copyright (C) 2012 readyState Software Ltd
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+  
+          http://www.apache.org/licenses/LICENSE-2.0
+  
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<resources>
+
+    <style name="Theme.Bacon" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/theme_primary</item>
+        <item name="colorPrimaryDark">@color/theme_primary_dark</item>
+        <item name="android:windowActivityTransitions">true</item>
+    </style>
+
+    <style name="Theme.Bacon.Home">
+        <item name="android:windowExitTransition">
+            @transition/grid_explode</item>
+    </style>
+
+    <style name="Theme.Bacon.Detail">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="Theme.Bacon.ToolbarMobile" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:paddingLeft">@dimen/material_appbar_padding_righ_left</item>
+        <item name="android:paddingRight">@dimen/material_appbar_padding_righ_left</item>
+        <item name="titleMarginStart">@dimen/material_appbar_title_padding_left</item>
+        <item name="titleTextColor">@android:color/white</item>
+    </style>
+
+    <style name="Theme.Bacon.ToolbarMobile.Title">
+        <item name="android:textColorPrimary">@android:color/white</item>
+    </style>
+
+    <style name="CollapsedTitle">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="ExpandedTitle">
+        <item name="android:textColor">@android:color/transparent</item>
+    </style>
+
+    <style name="MainGridItemHeading" parent="style/TextAppearance.AppCompat.Subhead">
+        <item name="android:background">@drawable/gradient_scrim_top_down</item>
+        <item name="android:textColor">@color/ltgray</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingLeft">@dimen/material_screen_edge_keyline</item>
+        <item name="android:paddingBottom">@dimen/material_screen_edge_keyline</item>
+    </style>
+
+
+    <style name="MainGridItemSubHeading" parent="@style/TextAppearance.AppCompat.Body1">
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:textColor">@color/ltgray</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:paddingLeft">@dimen/material_screen_edge_keyline</item>
+        <item name="android:background">@drawable/gradient_scrim_bottom_up</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <!-- Article Body Style -->
+    <style name="Body">
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+    
+    
+</resources>

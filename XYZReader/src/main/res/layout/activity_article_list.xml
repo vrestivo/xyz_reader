@@ -57,7 +57,6 @@
                 android:scaleType="fitCenter"
                 android:src="@drawable/logo"
                 app:layout_collapseMode="parallax"
-
                 />
 
             <android.support.v7.widget.Toolbar
