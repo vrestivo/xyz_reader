@@ -51,7 +51,7 @@
                 android:layout_height="match_parent"
                 android:elevation="@dimen/material_appbar_elevation"
                 android:contentDescription="@string/app_name"
-                android:paddingBottom="@dimen/material_appbar_bottom_padding"
+                android:paddingBottom="@dimen/material_appbar_vertical_padding"
                 android:paddingStart="@dimen/material_appbar_title_padding_left"
                 android:paddingTop="@dimen/material_appbar_padding_top_bottom"
                 android:scaleType="fitCenter"
