@@ -98,6 +98,8 @@ public class ArticleDetailFragment extends Fragment implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+
         if (getArguments().containsKey(ARG_ITEM_ID)) {
             mItemId = getArguments().getLong(ARG_ITEM_ID);
         }
@@ -368,6 +370,7 @@ public class ArticleDetailFragment extends Fragment implements
         }
 
         bindViews();
+        getActivity().startPostponedEnterTransition();
     }
 
     @Override
