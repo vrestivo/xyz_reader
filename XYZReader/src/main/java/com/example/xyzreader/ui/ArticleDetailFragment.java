@@ -188,6 +188,13 @@ public class ArticleDetailFragment extends Fragment implements
 
         mPhotoView = (ImageView) mRootView.findViewById(R.id.photo);
 
+        String transitionName = ArticleListActivity.TRANS_PREFIX + String.valueOf(mItemId);
+
+        Log.v(TAG, "_clicked fragment item transition name " + transitionName);
+
+        //FIXME wrap in conditional api level check
+        mPhotoView.setTransitionName(transitionName);
+
         // FIXME: 4/3/17 fix mPhotoContainerView references - no longer used
         mPhotoContainerView = mRootView.findViewById(R.id.photo_container);
         mPhotoContainerView.setBackground(null);

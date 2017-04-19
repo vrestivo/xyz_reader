@@ -57,6 +57,9 @@ public class ArticleListActivity extends AppCompatActivity implements
     // Most time functions can only handle 1902 - 2037
     private GregorianCalendar START_OF_EPOCH = new GregorianCalendar(2, 1, 1);
 
+    //transition name prefix
+    public static final String TRANS_PREFIX = "image_";
+
     //ArrayList to store article IDs will be used to pass to detail activity
     private ArrayList<Long> mArticleIdList;
 
@@ -201,14 +204,17 @@ public class ArticleListActivity extends AppCompatActivity implements
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
             View view = getLayoutInflater().inflate(R.layout.list_item_article, parent, false);
             final ViewHolder vh = new ViewHolder(view);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
+                    int VhPosition = vh.getAdapterPosition();
+
                     Intent intent = new Intent(Intent.ACTION_VIEW,
-                            ItemsContract.Items.buildItemUri(getItemId(vh.getAdapterPosition())));
+                            ItemsContract.Items.buildItemUri(getItemId(VhPosition)));
                     //paranoid check, just in case
                     if (mArticleIdList != null) {
                         intent.putExtra(ARTICLE__IDS_TAG, mArticleIdList);
@@ -218,6 +224,14 @@ public class ArticleListActivity extends AppCompatActivity implements
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && view != null) {
                         if (view instanceof CardView) {
                             View thumbnail = view.findViewById(R.id.thumbnail);
+                            //TODO get clicked item's ID
+                            String transitionName = TRANS_PREFIX + String.valueOf(mArticleIdList.get(VhPosition));
+
+                            thumbnail.setTransitionName(transitionName);
+
+                            //TODO delete logging
+                            Log.v(TAG, "_clicked item transition name " + transitionName);
+
                             String trName = null;
                             if (thumbnail != null && (trName = thumbnail.getTransitionName()) != null) {
                                 Bundle transitionBundle = ActivityOptionsCompat

@@ -11,6 +11,7 @@
 
     <string name="tag_app_logo">app_logo</string>
 
+    <!--TODO delete transitin name-->
     <string name="transition_image">transition_image</string>
 
 </resources>
