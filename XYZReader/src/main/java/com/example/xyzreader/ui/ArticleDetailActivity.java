@@ -58,6 +58,7 @@ public class ArticleDetailActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //FIXME
         //postpone transition
         postponeEnterTransition();
 
