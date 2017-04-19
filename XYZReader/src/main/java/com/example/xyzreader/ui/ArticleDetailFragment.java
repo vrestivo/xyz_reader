@@ -123,7 +123,7 @@ public class ArticleDetailFragment extends Fragment implements
         // the fragment's onCreate may cause the same LoaderManager to be dealt to multiple
         // fragments because their mIndex is -1 (haven't been added to the activity yet). Thus,
         // we do this in onActivityCreated.
-        getLoaderManager().initLoader(0, null, this);
+        //getLoaderManager().initLoader(0, null, this);
     }
 
     @Override
@@ -138,6 +138,9 @@ public class ArticleDetailFragment extends Fragment implements
 
         mDetailFragmentCoordinatorLayout.setBackground(null);
 
+
+        //TODO check if this improves perf
+        getLoaderManager().initLoader(0, null, this);
 
 
 
@@ -214,7 +217,7 @@ public class ArticleDetailFragment extends Fragment implements
         });
 
         bindViews();
-        updateStatusBar();
+        //updateStatusBar();
         return mRootView;
     }
 
@@ -331,7 +334,7 @@ public class ArticleDetailFragment extends Fragment implements
                                 mPhotoView.setImageBitmap(imageContainer.getBitmap());
                                 mRootView.findViewById(R.id.meta_bar)
                                         .setBackgroundColor(mMutedColor);
-                                updateStatusBar();
+                                //updateStatusBar();
                             }
                         }
 
@@ -370,6 +373,7 @@ public class ArticleDetailFragment extends Fragment implements
         }
 
         bindViews();
+        //FIXME
         getActivity().startPostponedEnterTransition();
     }
 
