@@ -277,9 +277,9 @@ public class ArticleDetailFragment extends Fragment implements
 
 
         if (mCursor != null) {
-            mRootView.setAlpha(0);
+            //mRootView.setAlpha(0);
             mRootView.setVisibility(View.VISIBLE);
-            mRootView.animate().alpha(1);
+            //mRootView.animate().alpha(1);
             titleView.setText(mCursor.getString(ArticleLoader.Query.TITLE));
             Date publishedDate = parsePublishedDate();
             if (!publishedDate.before(START_OF_EPOCH.getTime())) {
@@ -322,7 +322,7 @@ public class ArticleDetailFragment extends Fragment implements
 
             }
 
-
+            Log.v(TAG, "_item ID: " + mItemId + " body size: " + bodyView.getText().length());
             ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
                     .get(mCursor.getString(ArticleLoader.Query.PHOTO_URL), new ImageLoader.ImageListener() {
                         @Override
@@ -343,6 +343,8 @@ public class ArticleDetailFragment extends Fragment implements
 
                         }
                     });
+
+
         } else {
             mRootView.setVisibility(View.GONE);
             titleView.setText("N/A");

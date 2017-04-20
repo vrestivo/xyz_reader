@@ -233,7 +233,7 @@ public class ArticleListActivity extends AppCompatActivity implements
                             Log.v(TAG, "_clicked item transition name " + transitionName);
 
                             String trName = null;
-  /*                          if (thumbnail != null && (trName = thumbnail.getTransitionName()) != null) {
+                            if (thumbnail != null && (trName = thumbnail.getTransitionName()) != null) {
                                 Bundle transitionBundle = ActivityOptionsCompat
                                         .makeSceneTransitionAnimation(
                                                 mActivity,
@@ -244,8 +244,8 @@ public class ArticleListActivity extends AppCompatActivity implements
 
                                 startActivity(intent, transitionBundle);
 
-                            }*/
-                            startActivity(intent);
+                            }
+                            //startActivity(intent);
 
 
                         }
