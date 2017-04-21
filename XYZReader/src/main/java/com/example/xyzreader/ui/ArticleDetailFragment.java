@@ -55,7 +55,7 @@ public class ArticleDetailFragment extends Fragment implements
 
     private static final String FAT_SIGNATURE = "\\*\\*\\*\\s+END\\s+OF";
 
-
+    private final int MAX_STR_LEN = 2000;
 
     private Cursor mCursor;
     private long mItemId;
@@ -310,47 +310,41 @@ public class ArticleDetailFragment extends Fragment implements
 
             //bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br />")));
             //account for deprecated Hhtm.fromhtml()
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                //bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br />"), Html.FROM_HTML_MODE_COMPACT));
 
-                String article = mCursor.getString(ArticleLoader.Query.BODY);
-                String[] splitFat = article.split(FAT_SIGNATURE);
-                //int size = article.split("\\*\\*\\*\\s+END").length;
+            String article = mCursor.getString(ArticleLoader.Query.BODY);
+            String[] splitFat = article.split(FAT_SIGNATURE);
+            //int size = article.split("\\*\\*\\*\\s+END").length;
 
-                int splitSize = splitFat.length;
-                if(splitSize>0){
+            int splitSize = splitFat.length;
+            if(splitSize>0){
+
+
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 
                     //NOTE index 0 is the main body
                     //     index 1 is the post-article contents
-                    bodyView.setText(splitFat[1]);
-                }
-                else {
-                    //TODO clean this up
-                    bodyView.setText("NO artcicle? try refreshing...");
+                    String articleBreakFiltered = Html.fromHtml(splitFat[0].substring(0, MAX_STR_LEN).replaceAll("(\r\n|\n){2}", BREAK), Html.FROM_HTML_MODE_LEGACY).toString();
+                    bodyView.setText(articleBreakFiltered.replaceAll(BREAK, "\n\n"));
+
+
+                    Log.v(TAG, "_splitSize: " + splitSize );
+
+
+                } else {
+                    //Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY));
+                    //TODO test on a legacy device
+                    String articleBreakFiltered = Html.fromHtml(splitFat[0].substring(0, MAX_STR_LEN).replaceAll("(\r\n|\n){2}", BREAK)).toString();
+                    bodyView.setText(articleBreakFiltered.replaceAll(BREAK, "\n\n"));
 
                 }
 
-                Log.v(TAG, "_splitSize: " + splitSize );
 
-
-
-                //Log.v(TAG, "_fatFree: " + fatFree );
-
-                //bodyView.setText(mCursor.getString(ArticleLoader.Query.BODY));
-
-
-                //bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n\r\n|\n\n)", "****"), Html.FROM_HTML_MODE_COMPACT));
-                //bodyView.setText(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n\r\n|\n\n)", "\r\n\r\n").replaceAll("(\r\n|\n){1}", ""));
-
-                //String article = Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n){2}", BREAK), Html.FROM_HTML_MODE_LEGACY).toString();
-                //bodyView.setText(article.replaceAll(BREAK, "\n\n"));
-
-
-            } else {
-                //Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY));
-                //TODO test on a legacy device
-                //String article = Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n){2}", BREAK)).toString();
-               // bodyView.setText(article.replaceAll(BREAK, "\n\n"));
+            }
+            else {
+                //TODO clean this up
+                //TODO set text to error message
+                bodyView.setText("NO artcicle? try refreshing...");
 
             }
 
