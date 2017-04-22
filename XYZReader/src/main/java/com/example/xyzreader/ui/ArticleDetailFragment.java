@@ -53,6 +53,10 @@ public class ArticleDetailFragment extends Fragment implements
     public static final String ARG_ITEM_ID = "item_id";
     private static final float PARALLAX_FACTOR = 1.25f;
 
+    private static final String FAT_SIGNATURE = "\\*\\*\\*\\s+END\\s+OF";
+
+    private final int MAX_STR_LEN = 2000;
+
     private Cursor mCursor;
     private long mItemId;
     private View mRootView;
@@ -216,8 +220,10 @@ public class ArticleDetailFragment extends Fragment implements
             }
         });
 
-        bindViews();
+        //bindViews();
         //updateStatusBar();
+        //getActivity().startPostponedEnterTransition();
+
         return mRootView;
     }
 
@@ -273,7 +279,6 @@ public class ArticleDetailFragment extends Fragment implements
         TextView bodyView = (TextView) mRootView.findViewById(R.id.article_body);
 
 
-        //bodyView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Rosario-Regular.ttf"));
 
 
         if (mCursor != null) {
@@ -301,24 +306,40 @@ public class ArticleDetailFragment extends Fragment implements
 
             }
 
-
-            //bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br />")));
             //account for deprecated Hhtm.fromhtml()
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                //bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br />"), Html.FROM_HTML_MODE_COMPACT));
-                //bodyView.setText(mCursor.getString(ArticleLoader.Query.BODY));
-                //bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n\r\n|\n\n)", "****"), Html.FROM_HTML_MODE_COMPACT));
-                //bodyView.setText(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n\r\n|\n\n)", "\r\n\r\n").replaceAll("(\r\n|\n){1}", ""));
+            String article = mCursor.getString(ArticleLoader.Query.BODY);
+            String[] splitFat = article.split(FAT_SIGNATURE);
+            //int size = article.split("\\*\\*\\*\\s+END").length;
 
-                String article = Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n){2}", BREAK), Html.FROM_HTML_MODE_LEGACY).toString();
-                bodyView.setText(article.replaceAll(BREAK, "\n\n"));
+            int splitSize = splitFat.length;
+            if(splitSize>0){
 
 
-            } else {
-                //Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY));
-                //TODO test on a legacy device
-                String article = Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n){2}", BREAK)).toString();
-                bodyView.setText(article.replaceAll(BREAK, "\n\n"));
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+
+                    //NOTE index 0 is the main body
+                    //     index 1 is the post-article contents
+                    String articleBreakFiltered = Html.fromHtml(splitFat[0].substring(0, MAX_STR_LEN).replaceAll("(\r\n|\n){2}", BREAK), Html.FROM_HTML_MODE_LEGACY).toString();
+                    bodyView.setText(articleBreakFiltered.replaceAll(BREAK, "\n\n"));
+
+
+                    Log.v(TAG, "_splitSize: " + splitSize );
+
+
+                } else {
+                    //TODO test on a legacy device
+                    String articleBreakFiltered = Html.fromHtml(splitFat[0].substring(0, MAX_STR_LEN).replaceAll("(\r\n|\n){2}", BREAK)).toString();
+                    bodyView.setText(articleBreakFiltered.replaceAll(BREAK, "\n\n"));
+
+                }
+
+
+            }
+            else {
+                //TODO clean this up
+                //TODO set text to error message
+                bodyView.setText("NO artcicle? try refreshing...");
 
             }
 
@@ -329,12 +350,13 @@ public class ArticleDetailFragment extends Fragment implements
                         public void onResponse(ImageLoader.ImageContainer imageContainer, boolean b) {
                             Bitmap bitmap = imageContainer.getBitmap();
                             if (bitmap != null) {
+                                //FIXME fix deprecated method
                                 Palette p = Palette.generate(bitmap, 12);
                                 mMutedColor = p.getDarkMutedColor(0xFF333333);
                                 mPhotoView.setImageBitmap(imageContainer.getBitmap());
+                                mPhotoView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                                 mRootView.findViewById(R.id.meta_bar)
                                         .setBackgroundColor(mMutedColor);
-                                //updateStatusBar();
                             }
                         }
 

@@ -243,6 +243,8 @@ public class ArticleListActivity extends AppCompatActivity implements
                                         .toBundle();
 
                                 startActivity(intent, transitionBundle);
+                                //startActivity(intent);
+
 
                             }
                             //startActivity(intent);
