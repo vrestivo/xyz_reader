@@ -306,10 +306,8 @@ public class ArticleDetailFragment extends Fragment implements
 
             }
 
-            //account for deprecated Hhtm.fromhtml()
             String article = mCursor.getString(ArticleLoader.Query.BODY);
             String[] splitFat = article.split(FAT_SIGNATURE);
-            //int size = article.split("\\*\\*\\*\\s+END").length;
 
             int splitSize = splitFat.length;
             if(splitSize>0){

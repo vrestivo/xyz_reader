@@ -98,9 +98,6 @@ public class ArticleDetailActivity extends AppCompatActivity
         Log.v(LOG_TAG, "_in onCreate() ArrayListSize: " + mArticleIdList.size());
 
 
-        //FIXME elliminate
-        //getLoaderManager().initLoader(0, null, this);
-
         mPagerAdapter = new MyPagerAdapter(getFragmentManager());
         mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setAdapter(mPagerAdapter);
@@ -112,68 +109,22 @@ public class ArticleDetailActivity extends AppCompatActivity
                 .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics()));
         mPager.setPageMarginDrawable(new ColorDrawable(0x22000000));
 
-        //FIX chang to addOnPAgeChangeLitener
+        //FIX change to addOnPAgeChangeLitener
         //since setOnPageChangeListener() is deprecated
         mPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageScrollStateChanged(int state) {
                 super.onPageScrollStateChanged(state);
-
-                    //TODO replace button animation
-                    /*
-                    mUpButton.animate()
-                        .alpha((state == ViewPager.SCROLL_STATE_IDLE) ? 1f : 0f)
-                        .setDuration(300);
-                    */
             }
 
             @Override
             public void onPageSelected(int position) {
                 if (mArticleIdList != null) {
-                    //mCursor.moveToPosition(position);
-
-                    //}
-
                     mSelectedItemId =mArticleIdList.get(position);
 
-                    //FIXME crashes here. pass movie id paramenter
-                    //mSelectedItemId = mCursor.getLong(ArticleLoader.Query._ID);
-                    //FIXME
-                    //updateUpButtonPosition();
-
                 }
             }
         });
-
-        //FIXME
-        //mUpButtonContainer = findViewById(R.id.up_container);
-        //mUpButton = findViewById(R.id.action_up);
-
-        //FIXME
-/*
-        mUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onSupportNavigateUp();
-            }
-        });
-*/
-
-        //FIXME
-/*        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mUpButtonContainer.setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
-                @Override
-                public WindowInsets onApplyWindowInsets(View view, WindowInsets windowInsets) {
-                    view.onApplyWindowInsets(windowInsets);
-                    mTopInset = windowInsets.getSystemWindowInsetTop();
-                    mUpButtonContainer.setTranslationY(mTopInset);
-                    //FIXME
-                    //updateUpButtonPosition();
-                    return windowInsets;
-                }
-            });
-        }*/
-
 
     } //end of onCreate()
 
@@ -186,54 +137,6 @@ public class ArticleDetailActivity extends AppCompatActivity
         super.onSaveInstanceState(outState);
     }
 
-//FIXME delete when done
-
-/*
-    @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return ArticleLoader.newAllArticlesInstance(this);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        mCursor = cursor;
-        mPagerAdapter.notifyDataSetChanged();
-
-        // Select the start ID
-        if (mStartId > 0) {
-            mCursor.moveToFirst();
-            // TODO: optimize
-            while (!mCursor.isAfterLast()) {
-                if (mCursor.getLong(ArticleLoader.Query._ID) == mStartId) {
-                    final int position = mCursor.getPosition();
-                    mPager.setCurrentItem(position, false);
-                    break;
-                }
-                mCursor.moveToNext();
-            }
-            mStartId = 0;
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
-        mCursor = null;
-        mPagerAdapter.notifyDataSetChanged();
-    }
-*/
-
-//    public void onUpButtonFloorChanged(long itemId, ArticleDetailFragment fragment) {
-//        if (itemId == mSelectedItemId) {
-//            mSelectedItemUpButtonFloor = fragment.getUpButtonFloor();
-//            updateUpButtonPosition();
-//        }
-//    }
-
-/*    private void updateUpButtonPosition() {
-        int upButtonNormalBottom = mTopInset + mUpButton.getHeight();
-        mUpButton.setTranslationY(Math.min(mSelectedItemUpButtonFloor - upButtonNormalBottom, 0));
-    }*/
-
 
     //FIXME
     private class MyPagerAdapter extends FragmentStatePagerAdapter {
@@ -245,12 +148,6 @@ public class ArticleDetailActivity extends AppCompatActivity
         @Override
         public void setPrimaryItem(ViewGroup container, int position, Object object) {
             super.setPrimaryItem(container, position, object);
-            ArticleDetailFragment fragment = (ArticleDetailFragment) object;
-            if (fragment != null) {
-                //FIXME commented below
-                //mSelectedItemUpButtonFloor = fragment.getUpButtonFloor();
-                //updateUpButtonPosition();
-            }
         }
 
         //Required
