@@ -138,6 +138,12 @@ public class ArticleDetailActivity extends AppCompatActivity
     }
 
 
+    private void updateDetialActivity(){
+
+    }
+
+
+
     //FIXME
     private class MyPagerAdapter extends FragmentStatePagerAdapter {
         public MyPagerAdapter(FragmentManager fm) {

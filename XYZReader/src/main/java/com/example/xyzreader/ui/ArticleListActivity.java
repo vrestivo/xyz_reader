@@ -66,8 +66,15 @@ public class ArticleListActivity extends AppCompatActivity implements
     //string name for the mArticleIdList
     public static final String ARTICLE__IDS_TAG = "ARTICLE_IDs";
 
+    //request code to determine if detail activity is done
+    public static final int REQ_CODE = 1337;
+
+    //tracks state of the detail activity
+    private boolean mDetailActivityActive = false;
+
     //local broadcast manager instance
     private LocalBroadcastManager mLocalBroadcastManager;
+
 
 
     @Override
@@ -114,6 +121,18 @@ public class ArticleListActivity extends AppCompatActivity implements
         mLocalBroadcastManager.registerReceiver(mRefreshingReceiver,
                 new IntentFilter(UpdaterService.BROADCAST_ACTION_STATE_CHANGE));
 
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        mDetailActivityActive = false;
     }
 
     @Override
@@ -242,19 +261,19 @@ public class ArticleListActivity extends AppCompatActivity implements
                                                 trName)
                                         .toBundle();
 
-                                startActivity(intent, transitionBundle);
-                                //startActivity(intent);
+                                mDetailActivityActive = true;
 
+                                startActivityForResult(intent, REQ_CODE, transitionBundle);
 
                             }
-                            //startActivity(intent);
 
 
                         }
                         Log.v(TAG, "_in onCreateViewHolder() view or view transition name is null");
 
                     } else {
-                        startActivity(intent);
+                        mDetailActivityActive = true;
+                        startActivityForResult(intent, REQ_CODE);
                     }
                 }
             });
@@ -271,6 +290,7 @@ public class ArticleListActivity extends AppCompatActivity implements
                 return new Date();
             }
         }
+
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
