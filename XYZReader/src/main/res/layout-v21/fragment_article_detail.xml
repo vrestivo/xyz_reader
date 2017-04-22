@@ -60,7 +60,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_arrow_back"
                     android:background="@color/transparent"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
                     android:padding="@dimen/material_appbar_nav_button_padding"
                     />
 
@@ -69,7 +69,7 @@
                     android:tag="@string/tag_app_logo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/material_appbar_title_padding_left"
+                    android:layout_marginStart="@dimen/material_horizontal_toolbar_logo_offset"
                     android:elevation="@dimen/material_appbar_elevation"
                     android:contentDescription="@string/app_name"
                     android:src="@drawable/logo"

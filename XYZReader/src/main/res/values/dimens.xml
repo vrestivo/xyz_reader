@@ -41,6 +41,8 @@
     <dimen name="material_appbar_elevation">4dp</dimen>
     <dimen name="material_appbar_nav_button_padding">4dp</dimen>
     <dimen name="material_appbar_horizontal_margin">16dp</dimen>
+    <!--offset to achieve a material 72dp start margin for Toolbar title (logo in our case)-->
+    <dimen name="material_horizontal_toolbar_logo_offset">24dp</dimen>
 
 
     <!-- horizontal material keylines and spacing -->
