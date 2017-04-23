@@ -3,23 +3,29 @@ package com.example.xyzreader.ui;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.LoaderManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v13.app.FragmentStatePagerAdapter;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.xyzreader.R;
 import com.example.xyzreader.data.ArticleLoader;
 import com.example.xyzreader.data.ItemsContract;
+import com.example.xyzreader.data.UpdaterService;
 
 import java.util.ArrayList;
 
@@ -54,9 +60,14 @@ public class ArticleDetailActivity extends AppCompatActivity
     // to MyPagerAdapter
     private ArrayList<Long> mArticleIdList;
 
+    private LocalBroadcastManager mLocalBroadcastManager;
+    private BroadcastReceiver mBroadcastReceiver;
+    private boolean mUpdating;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         //FIXME
         //postpone transition
@@ -91,6 +102,46 @@ public class ArticleDetailActivity extends AppCompatActivity
             mSelectedItemId = savedInstanceState.getLong(ID_TAG);
             mArticleIdList = (ArrayList<Long>) savedInstanceState.getSerializable(ART_TAG);
         }
+
+
+        //setup broadcast receiver for updates from UpdaterService
+        mLocalBroadcastManager = LocalBroadcastManager.getInstance(getApplicationContext());
+
+        mBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Toast.makeText(getApplicationContext(), "Broadcast Receiver DetailActivity: updated", Toast.LENGTH_SHORT).show();
+
+                if(UpdaterService.BROADCAST_ACTION_STATE_CHANGE.equals(intent.getAction())){
+                    if(intent.hasExtra(ArticleListActivity.ARTICLE__IDS_TAG)){
+                        int currentItem = mPager.getCurrentItem();
+                        for(Long id: mArticleIdList){
+                            Log.v(LOG_TAG, "_artId old list bcast recv: " + String.valueOf(id));
+                        }
+
+                        mPager.getAdapter().notifyDataSetChanged();
+                        mArticleIdList = (ArrayList<Long>) intent.getSerializableExtra(ArticleListActivity.ARTICLE__IDS_TAG);
+                        Log.v(LOG_TAG, "_currentItem bcast recv: " + String.valueOf(currentItem));
+                        Log.v(LOG_TAG, "_artId bcast recv: " + String.valueOf(mArticleIdList.get(currentItem)));
+                        for(Long id: mArticleIdList){
+                            Log.v(LOG_TAG, "_artId from list bcast recv: " + String.valueOf(id));
+                        }
+
+                        //FIX blank screen on updates by resetting addapter to new data;
+                        if(currentItem < mArticleIdList.size()){
+                            //tODO continue here
+                        }
+                        mPagerAdapter = new MyPagerAdapter(getFragmentManager());
+                        mPager.setAdapter(mPagerAdapter);
+
+                        mPager.setCurrentItem(currentItem);
+
+
+
+                    }
+                }
+            }
+        };
 
 
         //TODO delete when done
@@ -138,11 +189,18 @@ public class ArticleDetailActivity extends AppCompatActivity
     }
 
 
-    private void updateDetialActivity(){
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mLocalBroadcastManager.registerReceiver(mBroadcastReceiver,
+                new IntentFilter(UpdaterService.BROADCAST_ACTION_STATE_CHANGE));
     }
 
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mLocalBroadcastManager.unregisterReceiver(mBroadcastReceiver);
+    }
 
     //FIXME
     private class MyPagerAdapter extends FragmentStatePagerAdapter {

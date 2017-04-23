@@ -373,6 +373,12 @@ public class ArticleDetailFragment extends Fragment implements
         }
     }
 
+
+    public void resetLoader(long articleId){
+        mItemId = articleId;
+        getLoaderManager().restartLoader(0, null, null);
+    }
+
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         return ArticleLoader.newInstanceForItemId(getActivity(), mItemId);
