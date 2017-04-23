@@ -51,6 +51,8 @@ public class ArticleDetailFragment extends Fragment implements
     private static final String TAG = "ArticleDetailFragment";
 
     public static final String ARG_ITEM_ID = "item_id";
+
+    //TODO delete
     private static final float PARALLAX_FACTOR = 1.25f;
 
     private static final String FAT_SIGNATURE = "\\*\\*\\*\\s+END\\s+OF";
@@ -148,14 +150,6 @@ public class ArticleDetailFragment extends Fragment implements
 
 
 
-        //FIXME
-/*        mDetailFragmentCoordinatorLayout.setOnInsetsCallback(new DrawInsetsFrameLayout.OnInsetsCallback() {
-            @Override
-            public void onInsetsChanged(Rect insets) {
-                mTopInset = insets.top;
-            }
-        });*/
-
         //Setup Toolbar
         Toolbar toolbar = (Toolbar) mRootView.findViewById(R.id.detail_fragment_toolbar);
         toolbar.setBackground(null);
@@ -175,25 +169,9 @@ public class ArticleDetailFragment extends Fragment implements
 
         );
 
-//        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-
         //mScrollView = (ObservableScrollView) mRootView.findViewById(R.id.scrollview);
         mScrollView = (NestedScrollView) mRootView.findViewById(R.id.nested_scrollview);
 
-
-/*
-        mScrollView.setCallbacks(new ObservableScrollView.Callbacks() {
-            @Override
-            public void onScrollChanged() {
-                mScrollY = mScrollView.getScrollY();
-                //FIXME
-                //getActivityCast().onUpButtonFloorChanged(mItemId, ArticleDetailFragment.this);
-                mPhotoContainerView.setTranslationY((int) -(mScrollY - (mScrollY / PARALLAX_FACTOR)));
-                updateStatusBar();
-            }
-        });*/
 
         mPhotoView = (ImageView) mRootView.findViewById(R.id.photo);
 
@@ -201,8 +179,9 @@ public class ArticleDetailFragment extends Fragment implements
 
         Log.v(TAG, "_clicked fragment item transition name " + transitionName);
 
-        //FIXME wrap in conditional api level check
-        mPhotoView.setTransitionName(transitionName);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mPhotoView.setTransitionName(transitionName);
+        }
 
         // FIXME: 4/3/17 fix mPhotoContainerView references - no longer used
         mPhotoContainerView = mRootView.findViewById(R.id.photo_container);
@@ -220,28 +199,9 @@ public class ArticleDetailFragment extends Fragment implements
             }
         });
 
-        //bindViews();
-        //updateStatusBar();
-        //getActivity().startPostponedEnterTransition();
-
         return mRootView;
     }
 
-    private void updateStatusBar() {
-        int color = 0;
-        if (mPhotoView != null && mTopInset != 0 && mScrollY > 0) {
-            float f = progress(mScrollY,
-                    mStatusBarFullOpacityBottom - mTopInset * 3,
-                    mStatusBarFullOpacityBottom - mTopInset);
-            color = Color.argb((int) (255 * f),
-                    (int) (Color.red(mMutedColor) * 0.9),
-                    (int) (Color.green(mMutedColor) * 0.9),
-                    (int) (Color.blue(mMutedColor) * 0.9));
-        }
-        mStatusBarColorDrawable.setColor(color);
-        // FIXME: 4/3/17
-        //mDetailFragmentCoordinatorLayout.setInsetBackground(mStatusBarColorDrawable);
-    }
 
     static float progress(float v, float min, float max) {
         return constrain((v - min) / (max - min), 0, 1);
@@ -282,9 +242,7 @@ public class ArticleDetailFragment extends Fragment implements
 
 
         if (mCursor != null) {
-            //mRootView.setAlpha(0);
             mRootView.setVisibility(View.VISIBLE);
-            //mRootView.animate().alpha(1);
             titleView.setText(mCursor.getString(ArticleLoader.Query.TITLE));
             Date publishedDate = parsePublishedDate();
             if (!publishedDate.before(START_OF_EPOCH.getTime())) {
@@ -352,7 +310,7 @@ public class ArticleDetailFragment extends Fragment implements
                                 Palette p = Palette.generate(bitmap, 12);
                                 mMutedColor = p.getDarkMutedColor(0xFF333333);
                                 mPhotoView.setImageBitmap(imageContainer.getBitmap());
-                                mPhotoView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                                //mPhotoView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                                 mRootView.findViewById(R.id.meta_bar)
                                         .setBackgroundColor(mMutedColor);
                             }
@@ -402,7 +360,9 @@ public class ArticleDetailFragment extends Fragment implements
 
         bindViews();
         //FIXME
-        getActivity().startPostponedEnterTransition();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getActivity().startPostponedEnterTransition();
+        }
     }
 
     @Override
@@ -410,15 +370,4 @@ public class ArticleDetailFragment extends Fragment implements
         mCursor = null;
         bindViews();
     }
-// FIXME: 4/3/17 fix mPhotoContainerView references - no longer used
-/*    public int getUpButtonFloor() {
-        if (mPhotoContainerView == null || mPhotoView.getHeight() == 0) {
-            return Integer.MAX_VALUE;
-        }
-
-        // account for parallax
-        return mIsCard
-                ? (int) mPhotoContainerView.getTranslationY() + mPhotoView.getHeight() - mScrollY
-                : mPhotoView.getHeight() - mScrollY;
-    }*/
 }

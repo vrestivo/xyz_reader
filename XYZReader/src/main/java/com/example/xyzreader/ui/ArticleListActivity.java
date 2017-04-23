@@ -164,7 +164,7 @@ public class ArticleListActivity extends AppCompatActivity implements
             if (UpdaterService.BROADCAST_ACTION_STATE_CHANGE.equals(intent.getAction())) {
                 mIsRefreshing = intent.getBooleanExtra(UpdaterService.EXTRA_REFRESHING, false);
                 updateRefreshingUI();
-                //TODO
+                //TODO delete when done
                 Toast.makeText(getApplicationContext(), "Broadcast Receiver: updated", Toast.LENGTH_SHORT).show();
             }
         }
@@ -181,9 +181,6 @@ public class ArticleListActivity extends AppCompatActivity implements
     }
 
 
-    //TODO get a list of all artile Is and pass them to the detail activity
-    //the list will be used to retrieve the articles in the
-    //ArticleDetailFragment
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         //fill mArticleIdList with article IDs

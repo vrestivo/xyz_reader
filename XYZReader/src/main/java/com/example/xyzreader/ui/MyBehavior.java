@@ -60,9 +60,6 @@ public class MyBehavior extends AppBarLayout.ScrollingViewBehavior {
 
     @Override
     public boolean layoutDependsOn(CoordinatorLayout parent, View child, View dependency) {
-        //boolean result = dependency instanceof Toolbar;
-        //boolean result = PHOTO_TAG.equals(dependency.getTag());
-
         boolean result = dependency instanceof AppBarLayout;
 
         //TODO delete logging
@@ -82,8 +79,10 @@ public class MyBehavior extends AppBarLayout.ScrollingViewBehavior {
             if(newOverlap>mOverlap){
                 mOverlap=newOverlap;
                 setOverlayTop(mOverlap);
-
             }
+
+            Log.v(LOG_TAG, "_in layoutDependsOn overlap: " + String.valueOf(mOverlap));
+
 
         }
 
@@ -110,25 +109,14 @@ public class MyBehavior extends AppBarLayout.ScrollingViewBehavior {
         Log.v(LOG_TAG, "_in onDepencentViewChanged: " + child.getTag() + " " + child.getBottom());
         Log.v(LOG_TAG, "_in onDepencentViewChanged: overlap: " + mOverlap);
 
-        //Log.v(LOG_TAG, "_in onDepencentViewChanged: rate " + mDisplayMetrics.scaledDensity + "/" + DisplayMetrics.DENSITY_DEFAULT);
-        //Log.v(LOG_TAG, "_in onDepencentViewChanged: rate " + (Math.round(mDisplayMetrics.xdpi/DisplayMetrics.DENSITY_DEFAULT)));
-
-
-        //setOverlap(parent, dependency);
-
 
         if(bottom/mDisplayMetrics.scaledDensity<=mToolbar.getHeight() && mToolbarLogo!=null) {
-            //mToolbarLogo.setImageAlpha(255);
             mToolbarLogo.setVisibility(View.VISIBLE);
         }
         else {
-            //mToolbarLogo.setImageAlpha(0);
             mToolbarLogo.setVisibility(View.INVISIBLE);
-
         }
-
-        //TODO set animation for the logo
-
+        
         return super.onDependentViewChanged(parent, child, dependency);
     }
 
