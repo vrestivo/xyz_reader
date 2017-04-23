@@ -24,6 +24,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.xyzreader.R;
 import com.example.xyzreader.data.ArticleLoader;
@@ -131,7 +132,6 @@ public class ArticleListActivity extends AppCompatActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         mDetailActivityActive = false;
     }
 
@@ -149,12 +149,15 @@ public class ArticleListActivity extends AppCompatActivity implements
             if (UpdaterService.BROADCAST_ACTION_STATE_CHANGE.equals(intent.getAction())) {
                 mIsRefreshing = intent.getBooleanExtra(UpdaterService.EXTRA_REFRESHING, false);
                 updateRefreshingUI();
+                //TODO
+                Toast.makeText(getApplicationContext(), "Broadcast Receiver: updated", Toast.LENGTH_SHORT).show();
             }
         }
     };
 
     private void updateRefreshingUI() {
         mSwipeRefreshLayout.setRefreshing(mIsRefreshing);
+
     }
 
     @Override
@@ -168,7 +171,6 @@ public class ArticleListActivity extends AppCompatActivity implements
     //ArticleDetailFragment
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-
         //fill mArticleIdList with article IDs
         //the list will be passed to the detail activity to cut out
         //unneeded database operations
@@ -181,7 +183,6 @@ public class ArticleListActivity extends AppCompatActivity implements
                 cursor.moveToNext();
                 i++;
             }
-
         }
 
 
@@ -327,6 +328,8 @@ public class ArticleListActivity extends AppCompatActivity implements
         }
     }
 
+    public void updateDetailActivity(){
+    }
 
     //ViewHolder implementation
     public static class ViewHolder extends RecyclerView.ViewHolder {

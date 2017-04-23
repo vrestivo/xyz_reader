@@ -5,15 +5,19 @@ import android.content.ContentProviderOperation;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.OperationApplicationException;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.RemoteException;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.format.Time;
 import android.util.Log;
 
 import com.example.xyzreader.remote.RemoteEndpointUtil;
+import com.example.xyzreader.ui.ArticleListActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,8 +33,10 @@ public class UpdaterService extends IntentService {
     public static final String EXTRA_REFRESHING
             = "com.example.xyzreader.intent.extra.REFRESHING";
 
-    private LocalBroadcastManager mLocalBroadcastManager;
+    public static final String EXTRA_UPDATED
+            = "com.example.xyzreader.intent.extra.UPDATED";
 
+    private LocalBroadcastManager mLocalBroadcastManager;
 
 
     public UpdaterService() {
@@ -65,19 +71,19 @@ public class UpdaterService extends IntentService {
         try {
             JSONArray array = RemoteEndpointUtil.fetchJsonArray();
             if (array == null) {
-                throw new JSONException("Invalid parsed item array" );
+                throw new JSONException("Invalid parsed item array");
             }
 
             for (int i = 0; i < array.length(); i++) {
                 ContentValues values = new ContentValues();
                 JSONObject object = array.getJSONObject(i);
-                values.put(ItemsContract.Items.SERVER_ID, object.getString("id" ));
-                values.put(ItemsContract.Items.AUTHOR, object.getString("author" ));
-                values.put(ItemsContract.Items.TITLE, object.getString("title" ));
-                values.put(ItemsContract.Items.BODY, object.getString("body" ));
-                values.put(ItemsContract.Items.THUMB_URL, object.getString("thumb" ));
-                values.put(ItemsContract.Items.PHOTO_URL, object.getString("photo" ));
-                values.put(ItemsContract.Items.ASPECT_RATIO, object.getString("aspect_ratio" ));
+                values.put(ItemsContract.Items.SERVER_ID, object.getString("id"));
+                values.put(ItemsContract.Items.AUTHOR, object.getString("author"));
+                values.put(ItemsContract.Items.TITLE, object.getString("title"));
+                values.put(ItemsContract.Items.BODY, object.getString("body"));
+                values.put(ItemsContract.Items.THUMB_URL, object.getString("thumb"));
+                values.put(ItemsContract.Items.PHOTO_URL, object.getString("photo"));
+                values.put(ItemsContract.Items.ASPECT_RATIO, object.getString("aspect_ratio"));
                 values.put(ItemsContract.Items.PUBLISHED_DATE, object.getString("published_date"));
                 cpo.add(ContentProviderOperation.newInsert(dirUri).withValues(values).build());
             }
@@ -88,6 +94,35 @@ public class UpdaterService extends IntentService {
             Log.e(TAG, "Error updating content.", e);
         }
 
-        mLocalBroadcastManager.sendBroadcast(new Intent(BROADCAST_ACTION_STATE_CHANGE).putExtra(EXTRA_REFRESHING, false));
+
+        //TODO cleanup
+        ItemsDatabase dbHelper = new ItemsDatabase(getApplicationContext());
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor results = getContentResolver().query(ItemsContract.Items.buildDirUri(),
+                new String[]{ItemsContract.Items._ID},
+                null,
+                null,
+                null);
+
+        if (results != null && results.moveToFirst()) {
+            ArrayList<Long> movieIds = new ArrayList<>();
+
+            do {
+                movieIds.add(results.getLong(ArticleLoader.Query._ID));
+            } while (results.moveToNext());
+
+            mLocalBroadcastManager.sendBroadcast(new Intent(BROADCAST_ACTION_STATE_CHANGE)
+                    .putExtra(EXTRA_REFRESHING, false)
+                    .putExtra(EXTRA_UPDATED, true)
+                    .putExtra(ArticleListActivity.ARTICLE__IDS_TAG, movieIds));
+
+        } else {
+            mLocalBroadcastManager.sendBroadcast(new Intent(BROADCAST_ACTION_STATE_CHANGE).putExtra(EXTRA_REFRESHING, false));
+        }
+
+        //close cursor
+        results.close();
+
+
     }
 }
