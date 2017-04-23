@@ -99,10 +99,10 @@ public class UpdaterService extends IntentService {
         ItemsDatabase dbHelper = new ItemsDatabase(getApplicationContext());
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor results = getContentResolver().query(ItemsContract.Items.buildDirUri(),
-                new String[]{ItemsContract.Items._ID},
+                new String[]{ItemsContract.Items._ID, ItemsContract.Items.PUBLISHED_DATE},
                 null,
                 null,
-                null);
+                ItemsContract.Items.DEFAULT_SORT);
 
         if (results != null && results.moveToFirst()) {
             ArrayList<Long> movieIds = new ArrayList<>();
