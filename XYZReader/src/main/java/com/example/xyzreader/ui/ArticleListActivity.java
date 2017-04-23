@@ -77,7 +77,6 @@ public class ArticleListActivity extends AppCompatActivity implements
     private LocalBroadcastManager mLocalBroadcastManager;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,7 +130,15 @@ public class ArticleListActivity extends AppCompatActivity implements
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        //super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQ_CODE) {
+            if (resultCode == RESULT_OK) {
+                if(data!=null && data.hasExtra(UpdaterService.EXTRA_REFRESHING)){
+                    mIsRefreshing = data.getBooleanExtra(UpdaterService.EXTRA_REFRESHING, false);
+                    updateRefreshingUI();
+                }
+            }
+        }
         mDetailActivityActive = false;
     }
 
@@ -328,7 +335,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         }
     }
 
-    public void updateDetailActivity(){
+    public void updateDetailActivity() {
     }
 
     //ViewHolder implementation

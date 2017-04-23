@@ -81,12 +81,14 @@ public class ArticleDetailActivity extends AppCompatActivity
         setContentView(R.layout.activity_article_detail);
 
 
-        if(savedInstanceState == null) {
+        if (savedInstanceState == null) {
             Intent intent = getIntent();
 
             if (intent != null && intent.hasExtra(ArticleListActivity.ARTICLE__IDS_TAG)) {
                 //This works since ArrayList implements Serializable
                 mArticleIdList = (ArrayList<Long>) intent.getSerializableExtra(ArticleListActivity.ARTICLE__IDS_TAG);
+
+                //TODO delete when done
                 for (Long id : mArticleIdList) {
                     Log.v(LOG_TAG, "_Art_ID" + String.valueOf(id));
                 }
@@ -112,33 +114,58 @@ public class ArticleDetailActivity extends AppCompatActivity
             public void onReceive(Context context, Intent intent) {
                 Toast.makeText(getApplicationContext(), "Broadcast Receiver DetailActivity: updated", Toast.LENGTH_SHORT).show();
 
-                if(UpdaterService.BROADCAST_ACTION_STATE_CHANGE.equals(intent.getAction())){
-                    if(intent.hasExtra(ArticleListActivity.ARTICLE__IDS_TAG)){
+
+
+                if (UpdaterService.BROADCAST_ACTION_STATE_CHANGE.equals(intent.getAction())) {
+
+
+                    if(intent.hasExtra(UpdaterService.EXTRA_REFRESHING)) {
+                        boolean updated =  intent.getBooleanExtra(UpdaterService.EXTRA_REFRESHING, false);
+                        ArticleDetailActivity.this.setResult(
+                                RESULT_OK,
+                                new Intent().putExtra(UpdaterService.EXTRA_REFRESHING, updated));
+                    }
+
+                    if (intent.hasExtra(ArticleListActivity.ARTICLE__IDS_TAG)) {
                         int currentItem = mPager.getCurrentItem();
-                        for(Long id: mArticleIdList){
+
+                        //TODO delete when done
+                        for (Long id : mArticleIdList) {
                             Log.v(LOG_TAG, "_artId old list bcast recv: " + String.valueOf(id));
                         }
 
                         mPager.getAdapter().notifyDataSetChanged();
                         mArticleIdList = (ArrayList<Long>) intent.getSerializableExtra(ArticleListActivity.ARTICLE__IDS_TAG);
-                        Log.v(LOG_TAG, "_currentItem bcast recv: " + String.valueOf(currentItem));
-                        Log.v(LOG_TAG, "_artId bcast recv: " + String.valueOf(mArticleIdList.get(currentItem)));
-                        for(Long id: mArticleIdList){
-                            Log.v(LOG_TAG, "_artId from list bcast recv: " + String.valueOf(id));
+
+                        if (mArticleIdList.size() > 0) {
+                            Log.v(LOG_TAG, "_currentItem bcast recv: " + String.valueOf(currentItem));
+                            Log.v(LOG_TAG, "_artId bcast recv: " + String.valueOf(mArticleIdList.get(currentItem)));
+
+                            //TODO delete when done
+                            for (Long id : mArticleIdList) {
+                                Log.v(LOG_TAG, "_artId from list bcast recv: " + String.valueOf(id));
+                            }
+
+                            mPagerAdapter = new MyPagerAdapter(getFragmentManager());
+                            mPager.setAdapter(mPagerAdapter);
+
+                            //FIX blank screen on updates by resetting addapter to new data;
+                            if (currentItem < mArticleIdList.size()) {
+                                //tODO continue here
+                                mPager.setCurrentItem(currentItem);
+                            } else {
+                                mPager.setCurrentItem(0);
+                            }
                         }
-
-                        //FIX blank screen on updates by resetting addapter to new data;
-                        if(currentItem < mArticleIdList.size()){
-                            //tODO continue here
+                        else {
+                            //TODO return update status
+                            finish();
                         }
-                        mPagerAdapter = new MyPagerAdapter(getFragmentManager());
-                        mPager.setAdapter(mPagerAdapter);
-
-                        mPager.setCurrentItem(currentItem);
-
 
 
                     }
+
+
                 }
             }
         };
@@ -171,7 +198,7 @@ public class ArticleDetailActivity extends AppCompatActivity
             @Override
             public void onPageSelected(int position) {
                 if (mArticleIdList != null) {
-                    mSelectedItemId =mArticleIdList.get(position);
+                    mSelectedItemId = mArticleIdList.get(position);
 
                 }
             }
@@ -180,13 +207,13 @@ public class ArticleDetailActivity extends AppCompatActivity
     } //end of onCreate()
 
 
-
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putLong(ID_TAG, mSelectedItemId);
         outState.putSerializable(ART_TAG, mArticleIdList);
         super.onSaveInstanceState(outState);
     }
+
 
 
     @Override
@@ -218,19 +245,19 @@ public class ArticleDetailActivity extends AppCompatActivity
         @Override
         public Fragment getItem(int position) {
             //mCursor.moveToPosition(position);
-            if(mArticleIdList!=null && position < mArticleIdList.size() ) {
+            if (mArticleIdList != null && position < mArticleIdList.size()) {
                 Log.v(LOG_TAG, "_art position: " + mArticleIdList.get(position));
                 return ArticleDetailFragment.newInstance(mArticleIdList.get(position));
             }
 
-            return  null;
+            return null;
         }
 
         //Required
         @Override
         public int getCount() {
             //return (mCursor != null) ? mCursor.getCount() : 0;
-            if(mArticleIdList!= null){
+            if (mArticleIdList != null) {
                 return mArticleIdList.size();
             }
             return 0;
