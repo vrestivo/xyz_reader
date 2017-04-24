@@ -10,12 +10,11 @@
 
     <!-- detail -->
     <bool name="detail_is_card">false</bool>
-    <dimen name="detail_photo_height">304dp</dimen> <!--TODO delete, not needed-->
+    <dimen name="detail_photo_height">304dp</dimen>
     <dimen name="detail_card_top_margin">@dimen/detail_photo_height</dimen>
     <dimen name="detail_inner_horiz_margin">16dp</dimen>
     <dimen name="detail_card_max_width">600dp</dimen>
 
-    <!-- TODO verify material spec and organize values -->
     <dimen name="detail_title_text_size">32sp</dimen>
     <dimen name="detail_body_text_size">14sp</dimen>
     <item name="detail_body_line_spacing_multiplier" format="float" type="fraction">1.25</item>
@@ -31,8 +30,7 @@
     <!-- MATERIAL DESIGN SPEC DIMENSIONS -->
 
     <!-- Toolbar/AppBar -->
-    <dimen name="material_appbar_land_height">48dp</dimen>
-    <dimen name="material_appbar_port_height">56dp</dimen>
+
     <dimen name="material_appbar_padding_righ_left">16dp</dimen>
     <dimen name="material_appbar_padding_top_bottom">16dp</dimen>
     <dimen name="material_appbar_title_padding_left">72dp</dimen>

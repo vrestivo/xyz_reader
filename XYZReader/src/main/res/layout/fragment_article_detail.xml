@@ -42,7 +42,7 @@
             android:id="@+id/detail_fragment_toolbar"
             android:tag="tag_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/material_appbar_port_height"
+            android:layout_height="@dimen/material_toolbar_height"
             app:layout_collapseMode="pin"
             >
 

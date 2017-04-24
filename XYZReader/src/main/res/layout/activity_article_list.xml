@@ -36,7 +36,6 @@
             android:id="@+id/collapsing_toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:contentScrim="@color/theme_primary"
             app:collapsedTitleTextAppearance="@style/ExpandedTitle"
@@ -63,10 +62,8 @@
                 android:id="@+id/toolbar"
                 style="@style/Theme.Bacon.ToolbarMobile"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="@dimen/material_toolbar_height"
                 app:layout_collapseMode="pin"
-
-
                 />
 
 
