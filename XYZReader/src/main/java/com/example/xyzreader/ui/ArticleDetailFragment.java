@@ -256,10 +256,13 @@ public class ArticleDetailFragment extends Fragment implements
             }
 
             String article = mCursor.getString(ArticleLoader.Query.BODY);
-            String[] splitFat = article.split(FAT_SIGNATURE);
 
-            int splitSize = splitFat.length;
-            if(splitSize>0){
+
+            //saving old code in case need to revert to it
+            //String[] splitFat = article.split(FAT_SIGNATURE);
+
+            //int splitSize = splitFat.length;
+            //if(splitSize>0){
 
 
 
@@ -267,25 +270,30 @@ public class ArticleDetailFragment extends Fragment implements
 
                     //NOTE index 0 is the main body
                     //     index 1 is the post-article contents
-                    String articleBreakFiltered = Html.fromHtml(splitFat[0].substring(0, MAX_STR_LEN).replaceAll("(\r\n|\n){2}", BREAK), Html.FROM_HTML_MODE_LEGACY).toString();
+                    // old implementation just in case i have to revert back
+                    //String articleBreakFiltered = Html.fromHtml(splitFat[0].substring(0, MAX_STR_LEN).replaceAll("(\r\n|\n){2}", BREAK), Html.FROM_HTML_MODE_LEGACY).toString();
+                    String articleBreakFiltered = Html.fromHtml(article.replaceAll("(<br>{2})", BREAK), Html.FROM_HTML_MODE_LEGACY).toString();
+
                     bodyView.setText(articleBreakFiltered.replaceAll(BREAK, "\n\n"));
 
 
-                    Log.v(TAG, "_splitSize: " + splitSize );
+                    //Log.v(TAG, "_splitSize: " + splitSize );
 
 
                 } else {
                     //This is for API level < 21
-                    String articleBreakFiltered = Html.fromHtml(splitFat[0].substring(0, MAX_STR_LEN).replaceAll("(\r\n|\n){2}", BREAK)).toString();
+                    //String articleBreakFiltered = Html.fromHtml(splitFat[0].substring(0, MAX_STR_LEN).replaceAll("(\r\n|\n){2}", BREAK)).toString();
+                    String articleBreakFiltered = Html.fromHtml(article.replaceAll("(\r\n|\n){2}", BREAK)).toString();
+
                     bodyView.setText(articleBreakFiltered.replaceAll(BREAK, "\n\n"));
                 }
 
 
-            }
-            else {
-                bodyView.setText(getString(R.string.error_no_artice));
+            //}
+            //else {
+            //    bodyView.setText(getString(R.string.error_no_artice));
 
-            }
+            //}
 
             Log.v(TAG, "_item ID: " + mItemId + " body size: " + bodyView.getText().length());
             ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
