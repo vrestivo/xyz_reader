@@ -87,20 +87,11 @@ public class ArticleListActivity extends AppCompatActivity implements
 
         mLocalBroadcastManager = LocalBroadcastManager.getInstance(this);
 
-        //TODO cleanup
         CollapsingToolbarLayout ctl = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout);
-        //ctl.setExpandedTitleColor(ContextCompat.getColor(this, R.color.transparent));
-        //ctl.setCollapsedTitleTextColor(ContextCompat.getColor(this, R.color.theme_accent));
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        //mToolbar.setTitle(getString(R.string.app_name));
         setSupportActionBar(mToolbar);
 
-
-        //TODO cleanup
-        //final View toolbarContainerView = findViewById(R.id.toolbar_container);
-
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
-
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -138,7 +129,6 @@ public class ArticleListActivity extends AppCompatActivity implements
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQ_CODE) {
             if (resultCode == RESULT_OK) {
                 if(data!=null && data.hasExtra(UpdaterService.EXTRA_REFRESHING)){
@@ -164,8 +154,7 @@ public class ArticleListActivity extends AppCompatActivity implements
             if (UpdaterService.BROADCAST_ACTION_STATE_CHANGE.equals(intent.getAction())) {
                 mIsRefreshing = intent.getBooleanExtra(UpdaterService.EXTRA_REFRESHING, false);
                 updateRefreshingUI();
-                //TODO delete when done
-                Toast.makeText(getApplicationContext(), "Broadcast Receiver: updated", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, context.getString(R.string.toast_update_complete), Toast.LENGTH_SHORT).show();
             }
         }
     };

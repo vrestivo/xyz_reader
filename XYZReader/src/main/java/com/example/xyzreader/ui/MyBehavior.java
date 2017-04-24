@@ -41,59 +41,36 @@ public class MyBehavior extends AppBarLayout.ScrollingViewBehavior {
 
     public MyBehavior() {
         super();
-
-        //TODO delete logging
-        Log.v(LOG_TAG, "_in empty Constructor");
     }
 
 
     public MyBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
-
-        //TODO delete logging
-        Log.v(LOG_TAG, "_in XML Constructor");
         mDisplayMetrics=context.getResources().getDisplayMetrics();
-
-
-
     }
 
     @Override
     public boolean layoutDependsOn(CoordinatorLayout parent, View child, View dependency) {
         boolean result = dependency instanceof AppBarLayout;
 
-        //TODO delete logging
-        Log.v(LOG_TAG, "_in layoutDependsOn: " + child.getTag() + " " +dependency.getTag() + " " + String.valueOf(result));
-
         if(result){
             mToolbar = (Toolbar) dependency.findViewById(R.id.detail_fragment_toolbar);
             mToolbarLogo = (ImageView) mToolbar.findViewById(R.id.detail_toolbar_app_logo);
-            //setOverlap(parent, dependency);
+
             if(mDisplayMetrics==null) {
                 mDisplayMetrics = dependency.getResources().getDisplayMetrics();
             }
+
             int third = Math.round(mDisplayMetrics.heightPixels/DENOMINATOR);
             int bottom = dependency.getBottom();
-
-            Log.v(LOG_TAG, "_in layoutDependsOn third: " + String.valueOf(third));
-            Log.v(LOG_TAG, "_in layoutDependsOn bottom: " + String.valueOf(bottom));
-
-
             int newOverlap = bottom-third;
-            Log.v(LOG_TAG, "_in layoutDependsOn calculated overlap: " + String.valueOf(newOverlap));
-
 
             if(newOverlap>mOverlap){
                 mOverlap=newOverlap;
                 setOverlayTop(mOverlap);
             }
 
-            Log.v(LOG_TAG, "_in layoutDependsOn overlap: " + String.valueOf(mOverlap));
-
-
         }
-
-        //return super.layoutDependsOn(parent, child, dependency);
 
         return result;
     }
@@ -108,22 +85,11 @@ public class MyBehavior extends AppBarLayout.ScrollingViewBehavior {
             mDisplayMetrics = dependency.getContext().getResources().getDisplayMetrics();
         }
 
-        //get 1/3rd of screen's height
-        int third =  Math.round(mDisplayMetrics.heightPixels/3);
-
-        //TODO delete logging
-        Log.v(LOG_TAG, "_in onDepencentViewChanged: " + dependency.getTag() + " " + bottom + "/" + dependency.getHeight());
-        Log.v(LOG_TAG, "_in onDepencentViewChanged: " + child.getTag() + " " + child.getBottom());
-        Log.v(LOG_TAG, "_in onDepencentViewChanged: overlap: " + mOverlap);
-
-
         if(bottom/mDisplayMetrics.scaledDensity<=mToolbar.getHeight() && mToolbarLogo!=null) {
             mToolbarLogo.setVisibility(View.VISIBLE);
         }
         else if (bottom/mDisplayMetrics.scaledDensity>mToolbar.getHeight() && mToolbarLogo.getVisibility() == View.VISIBLE) {
             mToolbarLogo.setVisibility(View.INVISIBLE);
-            Log.v(LOG_TAG, "_in onDepencentViewChanged: setting logo to invisible");
-
         }
         
         return super.onDependentViewChanged(parent, child, dependency);

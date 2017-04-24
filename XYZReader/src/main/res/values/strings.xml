@@ -11,7 +11,8 @@
 
     <string name="tag_app_logo">app_logo</string>
 
-    <!--TODO delete transitin name-->
+    <string name="toast_update_complete">Update complete.</string>
+
     <string name="transition_image">transition_image</string>
 
     <string name="error_no_artice">NO artcicle? Please try refreshing.</string>

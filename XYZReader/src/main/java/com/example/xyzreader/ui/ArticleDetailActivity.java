@@ -88,11 +88,6 @@ public class ArticleDetailActivity extends AppCompatActivity
                 //This works since ArrayList implements Serializable
                 mArticleIdList = (ArrayList<Long>) intent.getSerializableExtra(ArticleListActivity.ARTICLE__IDS_TAG);
 
-                //TODO delete when done
-                for (Long id : mArticleIdList) {
-                    Log.v(LOG_TAG, "_Art_ID" + String.valueOf(id));
-                }
-
                 if (getIntent() != null && getIntent().getData() != null) {
                     mStartId = ItemsContract.Items.getItemId(getIntent().getData());
                     mSelectedItemId = mStartId;
@@ -112,7 +107,8 @@ public class ArticleDetailActivity extends AppCompatActivity
         mBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Toast.makeText(getApplicationContext(), "Broadcast Receiver DetailActivity: updated", Toast.LENGTH_SHORT).show();
+
+                Toast.makeText(context, context.getString(R.string.toast_update_complete), Toast.LENGTH_SHORT).show();
 
 
 
@@ -129,29 +125,16 @@ public class ArticleDetailActivity extends AppCompatActivity
                     if (intent.hasExtra(ArticleListActivity.ARTICLE__IDS_TAG)) {
                         int currentItem = mPager.getCurrentItem();
 
-                        //TODO delete when done
-                        for (Long id : mArticleIdList) {
-                            Log.v(LOG_TAG, "_artId old list bcast recv: " + String.valueOf(id));
-                        }
-
                         mPager.getAdapter().notifyDataSetChanged();
                         mArticleIdList = (ArrayList<Long>) intent.getSerializableExtra(ArticleListActivity.ARTICLE__IDS_TAG);
 
                         if (mArticleIdList.size() > 0) {
-                            Log.v(LOG_TAG, "_currentItem bcast recv: " + String.valueOf(currentItem));
-                            Log.v(LOG_TAG, "_artId bcast recv: " + String.valueOf(mArticleIdList.get(currentItem)));
-
-                            //TODO delete when done
-                            for (Long id : mArticleIdList) {
-                                Log.v(LOG_TAG, "_artId from list bcast recv: " + String.valueOf(id));
-                            }
 
                             mPagerAdapter = new MyPagerAdapter(getFragmentManager());
                             mPager.setAdapter(mPagerAdapter);
 
-                            //FIX blank screen on updates by resetting addapter to new data;
+                            //FIX: blank screen on updates by resetting adapter to new data;
                             if (currentItem < mArticleIdList.size()) {
-                                //tODO continue here
                                 mPager.setCurrentItem(currentItem);
                             } else {
                                 mPager.setCurrentItem(0);
@@ -165,12 +148,6 @@ public class ArticleDetailActivity extends AppCompatActivity
             }
         };
 
-
-        //TODO delete when done
-        Log.v(LOG_TAG, "_in onCreate() item ID: " + mSelectedItemId);
-        Log.v(LOG_TAG, "_in onCreate() ArrayListSize: " + mArticleIdList.size());
-
-
         mPagerAdapter = new MyPagerAdapter(getFragmentManager());
         mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setAdapter(mPagerAdapter);
@@ -182,7 +159,7 @@ public class ArticleDetailActivity extends AppCompatActivity
                 .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics()));
         mPager.setPageMarginDrawable(new ColorDrawable(0x22000000));
 
-        //FIX change to addOnPAgeChangeLitener
+        //FIX: change to addOnPAgeChangeLitener
         //since setOnPageChangeListener() is deprecated
         mPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override

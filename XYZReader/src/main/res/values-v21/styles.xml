@@ -24,7 +24,7 @@
     </style>
 
     <style name="Theme.Bacon.Home">
-        <!--<item name="android:windowExitTransition">@transition/grid_explode</item>-->
+        <item name="android:windowExitTransition">@transition/grid_explode</item>
         <item name="android:windowSharedElementExitTransition">
             @transition/transform_image
         </item>
