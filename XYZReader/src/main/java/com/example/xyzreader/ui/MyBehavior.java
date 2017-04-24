@@ -75,7 +75,14 @@ public class MyBehavior extends AppBarLayout.ScrollingViewBehavior {
             int third = Math.round(mDisplayMetrics.heightPixels/DENOMINATOR);
             int bottom = dependency.getBottom();
 
+            Log.v(LOG_TAG, "_in layoutDependsOn third: " + String.valueOf(third));
+            Log.v(LOG_TAG, "_in layoutDependsOn bottom: " + String.valueOf(bottom));
+
+
             int newOverlap = bottom-third;
+            Log.v(LOG_TAG, "_in layoutDependsOn calculated overlap: " + String.valueOf(newOverlap));
+
+
             if(newOverlap>mOverlap){
                 mOverlap=newOverlap;
                 setOverlayTop(mOverlap);
@@ -113,8 +120,10 @@ public class MyBehavior extends AppBarLayout.ScrollingViewBehavior {
         if(bottom/mDisplayMetrics.scaledDensity<=mToolbar.getHeight() && mToolbarLogo!=null) {
             mToolbarLogo.setVisibility(View.VISIBLE);
         }
-        else {
+        else if (bottom/mDisplayMetrics.scaledDensity>mToolbar.getHeight() && mToolbarLogo.getVisibility() == View.VISIBLE) {
             mToolbarLogo.setVisibility(View.INVISIBLE);
+            Log.v(LOG_TAG, "_in onDepencentViewChanged: setting logo to invisible");
+
         }
         
         return super.onDependentViewChanged(parent, child, dependency);
