@@ -161,7 +161,8 @@
 
     </android.support.v4.widget.NestedScrollView>
 
-    <ImageButton android:id="@+id/share_fab"
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/share_fab"
         android:background="@drawable/add_fab_background"
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="@dimen/fab_margin"
