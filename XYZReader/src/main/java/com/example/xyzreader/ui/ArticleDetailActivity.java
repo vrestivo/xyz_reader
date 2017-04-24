@@ -158,14 +158,9 @@ public class ArticleDetailActivity extends AppCompatActivity
                             }
                         }
                         else {
-                            //TODO return update status
                             finish();
                         }
-
-
                     }
-
-
                 }
             }
         };
@@ -244,7 +239,6 @@ public class ArticleDetailActivity extends AppCompatActivity
         //Required
         @Override
         public Fragment getItem(int position) {
-            //mCursor.moveToPosition(position);
             if (mArticleIdList != null && position < mArticleIdList.size()) {
                 Log.v(LOG_TAG, "_art position: " + mArticleIdList.get(position));
                 return ArticleDetailFragment.newInstance(mArticleIdList.get(position));
@@ -256,7 +250,6 @@ public class ArticleDetailActivity extends AppCompatActivity
         //Required
         @Override
         public int getCount() {
-            //return (mCursor != null) ? mCursor.getCount() : 0;
             if (mArticleIdList != null) {
                 return mArticleIdList.size();
             }

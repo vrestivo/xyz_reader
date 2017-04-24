@@ -113,8 +113,6 @@ public class ArticleDetailFragment extends Fragment implements
         mIsCard = getResources().getBoolean(R.bool.detail_is_card);
         mStatusBarFullOpacityBottom = getResources().getDimensionPixelSize(
                 R.dimen.detail_card_top_margin);
-        //TODO delete if menu is not implemented
-        //setHasOptionsMenu(true);
     }
 
     public ArticleDetailActivity getActivityCast() {
@@ -144,8 +142,6 @@ public class ArticleDetailFragment extends Fragment implements
 
         mDetailFragmentCoordinatorLayout.setBackground(null);
 
-
-        //TODO check if this improves perf
         getLoaderManager().initLoader(0, null, this);
 
 
@@ -169,21 +165,16 @@ public class ArticleDetailFragment extends Fragment implements
 
         );
 
-        //mScrollView = (ObservableScrollView) mRootView.findViewById(R.id.scrollview);
         mScrollView = (NestedScrollView) mRootView.findViewById(R.id.nested_scrollview);
-
-
         mPhotoView = (ImageView) mRootView.findViewById(R.id.photo);
 
         String transitionName = ArticleListActivity.TRANS_PREFIX + String.valueOf(mItemId);
-
         Log.v(TAG, "_clicked fragment item transition name " + transitionName);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mPhotoView.setTransitionName(transitionName);
         }
 
-        // FIXME: 4/3/17 fix mPhotoContainerView references - no longer used
         mPhotoContainerView = mRootView.findViewById(R.id.photo_container);
         mPhotoContainerView.setBackground(null);
 
@@ -284,18 +275,15 @@ public class ArticleDetailFragment extends Fragment implements
 
 
                 } else {
-                    //TODO test on a legacy device
+                    //This is for API level < 21
                     String articleBreakFiltered = Html.fromHtml(splitFat[0].substring(0, MAX_STR_LEN).replaceAll("(\r\n|\n){2}", BREAK)).toString();
                     bodyView.setText(articleBreakFiltered.replaceAll(BREAK, "\n\n"));
-
                 }
 
 
             }
             else {
-                //TODO clean this up
-                //TODO set text to error message
-                bodyView.setText("NO artcicle? try refreshing...");
+                bodyView.setText(getString(R.string.error_no_artice));
 
             }
 
@@ -306,7 +294,6 @@ public class ArticleDetailFragment extends Fragment implements
                         public void onResponse(ImageLoader.ImageContainer imageContainer, boolean b) {
                             Bitmap bitmap = imageContainer.getBitmap();
                             if (bitmap != null) {
-                                //FIXME fix deprecated method
                                 Palette p = Palette.generate(bitmap, 12);
                                 mMutedColor = p.getDarkMutedColor(0xFF333333);
                                 mPhotoView.setImageBitmap(imageContainer.getBitmap());
@@ -359,7 +346,6 @@ public class ArticleDetailFragment extends Fragment implements
         }
 
         bindViews();
-        //FIXME
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getActivity().startPostponedEnterTransition();
         }

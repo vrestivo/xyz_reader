@@ -14,4 +14,6 @@
     <!--TODO delete transitin name-->
     <string name="transition_image">transition_image</string>
 
+    <string name="error_no_artice">NO artcicle? Please try refreshing.</string>
+
 </resources>
