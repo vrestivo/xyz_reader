@@ -25,26 +25,24 @@
             />
     </android.support.v4.widget.SwipeRefreshLayout>
 
-      <android.support.design.widget.AppBarLayout
+    <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar_layout_main"
         android:layout_width="match_parent"
         android:layout_height="112dp"
-        android:elevation="@dimen/material_appbar_elevation">
+        >
 
-          <!-- TODO define hard value as dimen xml resources -->
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:contentScrim="@color/theme_primary"
             app:collapsedTitleTextAppearance="@style/ExpandedTitle"
+            app:contentScrim="@color/theme_primary"
+            app:expandedTitleMarginStart="@dimen/scrim_expanded_title_marting_start"
             app:expandedTitleTextAppearance="@style/ExpandedTitle"
-            app:expandedTitleMarginStart="64dp"
-            app:scrimVisibleHeightTrigger="112dp"
-            app:scrimAnimationDuration="150"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:scrimAnimationDuration="@integer/scrim_animation_duration"
+            app:scrimVisibleHeightTrigger="@dimen/scrim_visible_height_trigger"
             >
-
 
 
             <android.support.v7.widget.Toolbar
@@ -59,7 +57,6 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:elevation="@dimen/material_appbar_elevation"
                 android:contentDescription="@string/app_name"
                 android:paddingBottom="@dimen/material_appbar_vertical_padding"
                 android:paddingStart="@dimen/material_appbar_title_padding_left"

@@ -20,6 +20,11 @@
     <item name="detail_body_line_spacing_multiplier" format="float" type="fraction">1.25</item>
 
 
+    <!--Scrim settings-->
+    <dimen name="scrim_expanded_title_marting_start">64dp</dimen>
+    <dimen name="scrim_visible_height_trigger">112dp</dimen>
+    <item name="scrim_animation_duration" format="integer" type="integer">150</item>
+
     <!--article detail dimensions -->
     <dimen name="detail_metabar_vert_padding">16dp</dimen>
     <dimen name="detail_metabar_title_bottom_padding">4dp</dimen>
@@ -61,5 +66,6 @@
     <dimen name="fab_press_translation_z">6dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="fab_size_full">56dp</dimen>
+
 
 </resources>

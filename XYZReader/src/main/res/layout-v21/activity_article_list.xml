@@ -31,7 +31,6 @@
         android:layout_height="112dp"
         android:elevation="@dimen/material_appbar_elevation">
 
-          <!-- TODO define hard value as dimen xml resources -->
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar_layout"
             android:layout_width="match_parent"
@@ -40,9 +39,9 @@
             app:contentScrim="@color/theme_primary"
             app:collapsedTitleTextAppearance="@style/ExpandedTitle"
             app:expandedTitleTextAppearance="@style/ExpandedTitle"
-            app:expandedTitleMarginStart="64dp"
-            app:scrimVisibleHeightTrigger="112dp"
-            app:scrimAnimationDuration="150"
+            app:expandedTitleMarginStart="@dimen/scrim_expanded_title_marting_start"
+            app:scrimVisibleHeightTrigger="@dimen/scrim_visible_height_trigger"
+            app:scrimAnimationDuration="@integer/scrim_animation_duration"
             >
 
             <ImageView
