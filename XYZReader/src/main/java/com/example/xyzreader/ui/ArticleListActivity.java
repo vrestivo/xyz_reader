@@ -289,18 +289,42 @@ public class ArticleListActivity extends AppCompatActivity implements
             Date publishedDate = parsePublishedDate();
             if (!publishedDate.before(START_OF_EPOCH.getTime())) {
 
-                holder.subtitleView.setText(Html.fromHtml(
-                        DateUtils.getRelativeTimeSpanString(
-                                publishedDate.getTime(),
-                                System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
-                                DateUtils.FORMAT_ABBREV_ALL).toString()
-                                + "<br/>" + " by "
-                                + mCursor.getString(ArticleLoader.Query.AUTHOR)));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    holder.subtitleView.setText(Html.fromHtml(
+                            DateUtils.getRelativeTimeSpanString(
+                                    publishedDate.getTime(),
+                                    System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
+                                    DateUtils.FORMAT_ABBREV_ALL).toString()
+                                    + "<br/>" + " by "
+                                    + mCursor.getString(ArticleLoader.Query.AUTHOR),
+                            Html.FROM_HTML_MODE_LEGACY));
+                }
+                else{
+                    holder.subtitleView.setText(Html.fromHtml(
+                            DateUtils.getRelativeTimeSpanString(
+                                    publishedDate.getTime(),
+                                    System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
+                                    DateUtils.FORMAT_ABBREV_ALL).toString()
+                                    + "<br/>" + " by "
+                                    + mCursor.getString(ArticleLoader.Query.AUTHOR)));
+                }
+
+
             } else {
-                holder.subtitleView.setText(Html.fromHtml(
-                        outputFormat.format(publishedDate)
-                                + "<br/>" + " by "
-                                + mCursor.getString(ArticleLoader.Query.AUTHOR)));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    holder.subtitleView.setText(Html.fromHtml(
+                            outputFormat.format(publishedDate)
+                                    + "<br/>" + " by "
+                                    + mCursor.getString(ArticleLoader.Query.AUTHOR),
+                            Html.FROM_HTML_MODE_LEGACY));
+                }
+                else{
+                    holder.subtitleView.setText(Html.fromHtml(
+                            outputFormat.format(publishedDate)
+                                    + "<br/>" + " by "
+                                    + mCursor.getString(ArticleLoader.Query.AUTHOR)));
+                }
+
             }
             holder.thumbnailView.setImageUrl(
                     mCursor.getString(ArticleLoader.Query.THUMB_URL),
