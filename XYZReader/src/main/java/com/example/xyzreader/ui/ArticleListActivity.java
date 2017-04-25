@@ -9,7 +9,6 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -71,9 +70,6 @@ public class ArticleListActivity extends AppCompatActivity implements
     //request code to determine if detail activity is done
     public static final int REQ_CODE = 1337;
 
-    //tracks state of the detail activity
-    private boolean mDetailActivityActive = false;
-
     //local broadcast manager instance
     private LocalBroadcastManager mLocalBroadcastManager;
 
@@ -87,7 +83,6 @@ public class ArticleListActivity extends AppCompatActivity implements
 
         mLocalBroadcastManager = LocalBroadcastManager.getInstance(this);
 
-        CollapsingToolbarLayout ctl = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
@@ -137,7 +132,6 @@ public class ArticleListActivity extends AppCompatActivity implements
                 }
             }
         }
-        mDetailActivityActive = false;
     }
 
     @Override
@@ -258,23 +252,17 @@ public class ArticleListActivity extends AppCompatActivity implements
                                 Bundle transitionBundle = ActivityOptionsCompat
                                         .makeSceneTransitionAnimation(
                                                 mActivity,
-                                                //getApplication().act,
                                                 thumbnail,
                                                 trName)
                                         .toBundle();
 
-                                mDetailActivityActive = true;
-
                                 startActivityForResult(intent, REQ_CODE, transitionBundle);
-
                             }
-
 
                         }
                         Log.v(TAG, "_in onCreateViewHolder() view or view transition name is null");
 
                     } else {
-                        mDetailActivityActive = true;
                         startActivityForResult(intent, REQ_CODE);
                     }
                 }
@@ -317,8 +305,6 @@ public class ArticleListActivity extends AppCompatActivity implements
             holder.thumbnailView.setImageUrl(
                     mCursor.getString(ArticleLoader.Query.THUMB_URL),
                     ImageLoaderHelper.getInstance(ArticleListActivity.this).getImageLoader());
-            //TODO cleanup
-            //holder.thumbnailView.setAspectRatio(mCursor.getFloat(ArticleLoader.Query.ASPECT_RATIO));
             holder.thumbnailView.setAspectRatio(mImageAspectRatio);
 
         }
@@ -329,8 +315,6 @@ public class ArticleListActivity extends AppCompatActivity implements
         }
     }
 
-    public void updateDetailActivity() {
-    }
 
     //ViewHolder implementation
     public static class ViewHolder extends RecyclerView.ViewHolder {
