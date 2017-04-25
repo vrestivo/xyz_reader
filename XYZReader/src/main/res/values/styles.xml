@@ -23,10 +23,10 @@
         <item name="colorAccent">@color/theme_accent</item>
     </style>
 
-    <style name="Theme.Bacon.Detail">
-        <!--FIXME  fix the api level conflict -->
-        <item name="android:statusBarColor">@android:color/transparent</item>
-    </style>
+    <style name="Theme.Bacon.Home" parent="Theme.Bacon"></style>
+
+
+    <style name="Theme.Bacon.Detail" parent="Theme.Bacon"></style>
 
     <style name="Theme.Bacon.ToolbarMobile" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:paddingLeft">@dimen/material_appbar_padding_righ_left</item>

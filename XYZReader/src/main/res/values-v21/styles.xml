@@ -24,7 +24,7 @@
         <item name="android:windowActivityTransitions">true</item>
     </style>
 
-    <style name="Theme.Bacon.Home">
+    <style name="Theme.Bacon.Home" parent="Theme.Bacon">
         <item name="android:windowExitTransition">@transition/grid_explode</item>
         <item name="android:windowSharedElementExitTransition">
             @transition/transform_image
