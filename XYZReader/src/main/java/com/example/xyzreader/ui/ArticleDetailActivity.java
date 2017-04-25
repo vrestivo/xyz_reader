@@ -190,7 +190,6 @@ public class ArticleDetailActivity extends AppCompatActivity
         mLocalBroadcastManager.unregisterReceiver(mBroadcastReceiver);
     }
 
-    //FIXME
     private class MyPagerAdapter extends FragmentStatePagerAdapter {
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);

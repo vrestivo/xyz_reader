@@ -49,7 +49,6 @@
                 <!--android:layout_height="@dimen/material_appbar_port_height"-->
 
 
-                <!--TODO add shadow to button-->
                 <ImageButton
                     android:id="@+id/detail_back_button"
                     android:tag="tag_image_button"

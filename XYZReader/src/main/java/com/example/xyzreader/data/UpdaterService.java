@@ -95,9 +95,6 @@ public class UpdaterService extends IntentService {
         }
 
 
-        //TODO cleanup
-        ItemsDatabase dbHelper = new ItemsDatabase(getApplicationContext());
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor results = getContentResolver().query(ItemsContract.Items.buildDirUri(),
                 new String[]{ItemsContract.Items._ID, ItemsContract.Items.PUBLISHED_DATE},
                 null,

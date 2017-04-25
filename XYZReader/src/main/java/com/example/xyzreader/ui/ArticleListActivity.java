@@ -235,17 +235,13 @@ public class ArticleListActivity extends AppCompatActivity implements
                         intent.putExtra(ARTICLE__IDS_TAG, mArticleIdList);
                     }
 
-                    //TODO
+
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && view != null) {
                         if (view instanceof CardView) {
                             View thumbnail = view.findViewById(R.id.thumbnail);
-                            //TODO get clicked item's ID
                             String transitionName = TRANS_PREFIX + String.valueOf(mArticleIdList.get(VhPosition));
 
                             thumbnail.setTransitionName(transitionName);
-
-                            //TODO delete logging
-                            Log.v(TAG, "_clicked item transition name " + transitionName);
 
                             String trName = null;
                             if (thumbnail != null && (trName = thumbnail.getTransitionName()) != null) {
