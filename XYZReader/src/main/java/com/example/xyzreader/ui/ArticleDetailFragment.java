@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 
 import java.text.ParseException;
@@ -17,11 +16,9 @@ import java.util.GregorianCalendar;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.view.NestedScrollingChild;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
@@ -52,33 +49,27 @@ public class ArticleDetailFragment extends Fragment implements
 
     public static final String ARG_ITEM_ID = "item_id";
 
-    //TODO delete
-    private static final float PARALLAX_FACTOR = 1.25f;
-
-    private static final String FAT_SIGNATURE = "\\*\\*\\*\\s+END\\s+OF";
-
-    private final int MAX_STR_LEN = 2000;
+    //this stays for reverting purposes
+    //private static final String FAT_SIGNATURE = "\\*\\*\\*\\s+END\\s+OF";
 
     private Cursor mCursor;
     private long mItemId;
     private View mRootView;
     private int mMutedColor = 0xFF333333;
-    //private ObservableScrollView mScrollView;
-    private NestedScrollingChild mScrollView;
     private CoordinatorLayout mDetailFragmentCoordinatorLayout;
     private ColorDrawable mStatusBarColorDrawable;
 
-    private int mTopInset;
     private View mPhotoContainerView;
     private ImageView mPhotoView;
     private ImageButton mBackButton;
-    private int mScrollY;
     private boolean mIsCard = false;
     private int mStatusBarFullOpacityBottom;
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss");
+
     // Use default locale format
     private SimpleDateFormat outputFormat = new SimpleDateFormat();
+
     // Most time functions can only handle 1902 - 2037
     private GregorianCalendar START_OF_EPOCH = new GregorianCalendar(2, 1, 1);
 
@@ -103,7 +94,6 @@ public class ArticleDetailFragment extends Fragment implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
 
         if (getArguments().containsKey(ARG_ITEM_ID)) {
@@ -145,7 +135,6 @@ public class ArticleDetailFragment extends Fragment implements
         getLoaderManager().initLoader(0, null, this);
 
 
-
         //Setup Toolbar
         Toolbar toolbar = (Toolbar) mRootView.findViewById(R.id.detail_fragment_toolbar);
         toolbar.setBackground(null);
@@ -156,16 +145,15 @@ public class ArticleDetailFragment extends Fragment implements
         final AppCompatActivity activity = ((AppCompatActivity) getActivity());
 
         mBackButton.setOnClickListener(new View.OnClickListener() {
-                                                 @Override
-                                                 public void onClick(View v) {
-                                                     getActivity().onBackPressed();
+                                           @Override
+                                           public void onClick(View v) {
+                                               getActivity().onBackPressed();
 
-                                                 }
-                                             }
+                                           }
+                                       }
 
         );
 
-        mScrollView = (NestedScrollView) mRootView.findViewById(R.id.nested_scrollview);
         mPhotoView = (ImageView) mRootView.findViewById(R.id.photo);
 
         String transitionName = ArticleListActivity.TRANS_PREFIX + String.valueOf(mItemId);
@@ -193,10 +181,6 @@ public class ArticleDetailFragment extends Fragment implements
         return mRootView;
     }
 
-
-    static float progress(float v, float min, float max) {
-        return constrain((v - min) / (max - min), 0, 1);
-    }
 
     static float constrain(float val, float min, float max) {
         if (val < min) {
@@ -230,21 +214,32 @@ public class ArticleDetailFragment extends Fragment implements
         TextView bodyView = (TextView) mRootView.findViewById(R.id.article_body);
 
 
-
-
         if (mCursor != null) {
             mRootView.setVisibility(View.VISIBLE);
             titleView.setText(mCursor.getString(ArticleLoader.Query.TITLE));
             Date publishedDate = parsePublishedDate();
             if (!publishedDate.before(START_OF_EPOCH.getTime())) {
-                bylineView.setText(Html.fromHtml(
-                        DateUtils.getRelativeTimeSpanString(
-                                publishedDate.getTime(),
-                                System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
-                                DateUtils.FORMAT_ABBREV_ALL).toString()
-                                + " by <font color='#ffffff'>"
-                                + mCursor.getString(ArticleLoader.Query.AUTHOR)
-                                + "</font>"));
+
+                //use new fromHtml with correct API level
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    bylineView.setText(Html.fromHtml(
+                            DateUtils.getRelativeTimeSpanString(
+                                    publishedDate.getTime(),
+                                    System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
+                                    DateUtils.FORMAT_ABBREV_ALL).toString()
+                                    + " by <font color='#ffffff'>"
+                                    + mCursor.getString(ArticleLoader.Query.AUTHOR)
+                                    + "</font>", Html.FROM_HTML_MODE_LEGACY));
+                }else{
+                    bylineView.setText(Html.fromHtml(
+                            DateUtils.getRelativeTimeSpanString(
+                                    publishedDate.getTime(),
+                                    System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
+                                    DateUtils.FORMAT_ABBREV_ALL).toString()
+                                    + " by <font color='#ffffff'>"
+                                    + mCursor.getString(ArticleLoader.Query.AUTHOR)
+                                    + "</font>"));
+                }
 
             } else {
                 // If date is before 1902, just show the string
@@ -258,42 +253,30 @@ public class ArticleDetailFragment extends Fragment implements
             String article = mCursor.getString(ArticleLoader.Query.BODY);
 
 
-            //saving old code in case need to revert to it
+            //saving segment in case need to revert to it
             //String[] splitFat = article.split(FAT_SIGNATURE);
-
             //int splitSize = splitFat.length;
             //if(splitSize>0){
 
 
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                //NOTE index 0 is the main body
+                //     index 1 is the post-article contents
+                //saving for reverting purposes
+                //String articleBreakFiltered = Html.fromHtml(splitFat[0].substring(0, MAX_STR_LEN).replaceAll("(\r\n|\n){2}", BREAK), Html.FROM_HTML_MODE_LEGACY).toString();
+                String articleBreakFiltered = Html.fromHtml(article.replaceAll("(<br>{2})", BREAK), Html.FROM_HTML_MODE_LEGACY).toString();
 
-                    //NOTE index 0 is the main body
-                    //     index 1 is the post-article contents
-                    // old implementation just in case i have to revert back
-                    //String articleBreakFiltered = Html.fromHtml(splitFat[0].substring(0, MAX_STR_LEN).replaceAll("(\r\n|\n){2}", BREAK), Html.FROM_HTML_MODE_LEGACY).toString();
-                    String articleBreakFiltered = Html.fromHtml(article.replaceAll("(<br>{2})", BREAK), Html.FROM_HTML_MODE_LEGACY).toString();
+                bodyView.setText(articleBreakFiltered.replaceAll(BREAK, "\n\n"));
 
-                    bodyView.setText(articleBreakFiltered.replaceAll(BREAK, "\n\n"));
+            } else {
+                //This is for API level < 21
+                String articleBreakFiltered = Html.fromHtml(article.replaceAll("(\r\n|\n){2}", BREAK)).toString();
+                //saved for reverting purposes
+                //String articleBreakFiltered = Html.fromHtml(splitFat[0].substring(0, MAX_STR_LEN).replaceAll("(\r\n|\n){2}", BREAK)).toString();
 
-
-                    //Log.v(TAG, "_splitSize: " + splitSize );
-
-
-                } else {
-                    //This is for API level < 21
-                    //String articleBreakFiltered = Html.fromHtml(splitFat[0].substring(0, MAX_STR_LEN).replaceAll("(\r\n|\n){2}", BREAK)).toString();
-                    String articleBreakFiltered = Html.fromHtml(article.replaceAll("(\r\n|\n){2}", BREAK)).toString();
-
-                    bodyView.setText(articleBreakFiltered.replaceAll(BREAK, "\n\n"));
-                }
-
-
-            //}
-            //else {
-            //    bodyView.setText(getString(R.string.error_no_artice));
-
-            //}
+                bodyView.setText(articleBreakFiltered.replaceAll(BREAK, "\n\n"));
+            }
 
             Log.v(TAG, "_item ID: " + mItemId + " body size: " + bodyView.getText().length());
             ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
@@ -302,10 +285,9 @@ public class ArticleDetailFragment extends Fragment implements
                         public void onResponse(ImageLoader.ImageContainer imageContainer, boolean b) {
                             Bitmap bitmap = imageContainer.getBitmap();
                             if (bitmap != null) {
-                                Palette p = Palette.generate(bitmap, 12);
+                                Palette p = Palette.from(bitmap).generate();
                                 mMutedColor = p.getDarkMutedColor(0xFF333333);
                                 mPhotoView.setImageBitmap(imageContainer.getBitmap());
-                                //mPhotoView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                                 mRootView.findViewById(R.id.meta_bar)
                                         .setBackgroundColor(mMutedColor);
                             }
@@ -324,12 +306,6 @@ public class ArticleDetailFragment extends Fragment implements
             bylineView.setText("N/A");
             bodyView.setText("N/A");
         }
-    }
-
-
-    public void resetLoader(long articleId){
-        mItemId = articleId;
-        getLoaderManager().restartLoader(0, null, null);
     }
 
     @Override
