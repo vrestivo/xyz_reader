@@ -89,7 +89,7 @@ public class MyBehavior extends AppBarLayout.ScrollingViewBehavior {
             mToolbarLogo.setVisibility(View.VISIBLE);
         }
         else if (bottom/mDisplayMetrics.scaledDensity>mToolbar.getHeight() && mToolbarLogo.getVisibility() == View.VISIBLE) {
-            mToolbarLogo.setVisibility(View.INVISIBLE);
+            mToolbarLogo.setVisibility(View.GONE);
         }
         
         return super.onDependentViewChanged(parent, child, dependency);
