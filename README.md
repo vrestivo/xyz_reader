@@ -4,7 +4,7 @@ This app is a project for the Make It Material course of Udacity's
 Android Developer Nanodegree program.  The students were given starter code,
 which needed a lot of love.  The purpose of the project was to turn the
 buggy, ugly starter code into well-functioning, visually-appealing
-app by applying Material Design principles and good development practices.
+app by applying Material Design principles and sound software development practices.
 
 Features:
 
