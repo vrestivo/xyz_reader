@@ -12,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-
     <android.support.design.widget.CollapsingToolbarLayout
         android:id="@+id/photo_container"
         android:tag="tag_collapsing_toolbar"
@@ -26,6 +25,7 @@
         app:scrimVisibleHeightTrigger="112dp"
         app:scrimAnimationDuration="150"
         >
+
         <!--suppress AndroidLintContentDescription -->
         <ImageView
             android:id="@+id/photo"
